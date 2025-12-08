@@ -7,8 +7,8 @@ const Signin = () => {
 
 
     return (
-        <div className="hero bg-base-200 min-h-screen">
-            <div className="hero-content flex-col w-3/4 lg:w-1/3">
+        <div className="hero min-h-screen">
+            <div className="p-8 bg-base-200 rounded-2xl flex-col w-3/4 lg:w-1/3">
                 <div className="text-center">
                     <h1 className="text-5xl font-bold">Login</h1>
                     <p className="py-6">

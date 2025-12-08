@@ -1,7 +1,10 @@
 import { createBrowserRouter } from "react-router-dom";
 import MainLayout from "../layout/MainLayout";
-import ErrorPage from "../../Pages/public/ErrorPage";
-import Signin from "../../Pages/auth/Signin";
+import ErrorPage from "../../pages/public/ErrorPage";
+import Signin from "../../pages/auth/Signin";
+import Notice from "../../pages/public/Notice";
+import Contact from "../../pages/public/Contact";
+import Faculties from "../../pages/public/Faculties";
 
 const router = createBrowserRouter([
     {
@@ -10,14 +13,26 @@ const router = createBrowserRouter([
         errorElement: <ErrorPage />,
         children: [
             {
-                path: '/',
-                element: <h1>Home</h1>
+                path: '/signin',
+                element: <Signin />
             },
+            {
+                path: '/notice',
+                element: <Notice />
+            },
+            {
+                path: '/contact',
+                element: <Contact />
+            },
+            {
+                path: '/faculties',
+                element: <Faculties />
+            },
+            {
+                // path: "/admin",
+                // element: admin layout
+            }
         ]
-    },
-    {
-        path: '/signin',
-        element: <Signin />
     }
 ])
 

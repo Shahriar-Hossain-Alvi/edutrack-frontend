@@ -4,3 +4,9 @@
 @plugin "daisyui" {
   themes: light --default, forest --prefersdark;
 }
+
+/* CSS */
+.navbar a.active{
+  background-color: #1FB854;
+  color: black
+}
