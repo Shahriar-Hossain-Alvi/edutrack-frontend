@@ -4,9 +4,9 @@ import Navbar from "../../components/ui/Navbar";
 
 const MainLayout = () => {
     return (
-        <div className="">
+        <div className="font-noto-sans">
             <Navbar />
-            <div className="container mx-auto">
+            <div>
                 <Outlet />
             </div>
             {/* TODO: Footer here */}

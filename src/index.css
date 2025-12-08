@@ -1,11 +1,21 @@
+/* google fonts */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wdth,wght@0,62.5..100,100..900;1,62.5..100,100..900&display=swap');
+
+/* tailwind + daisyui imports */
 @import "tailwindcss";
 @plugin "daisyui";
 
+/* set themes */
 @plugin "daisyui" {
   themes: light --default, forest --prefersdark;
 }
 
-/* CSS */
+
+/* Custom CSS */
+@theme {
+  --font-noto-sans: "Noto Sans", sans-serif;
+}
+
 .navbar a.active{
   background-color: #1FB854;
   color: black

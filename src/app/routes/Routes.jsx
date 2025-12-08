@@ -5,6 +5,8 @@ import Signin from "../../pages/auth/Signin";
 import Notice from "../../pages/public/Notice";
 import Contact from "../../pages/public/Contact";
 import Faculties from "../../pages/public/Faculties";
+import AdminLayout from "../layout/AdminLayout";
+import Dashboard from "../../pages/admin/Dashboard";
 
 const router = createBrowserRouter([
     {
@@ -28,9 +30,17 @@ const router = createBrowserRouter([
                 path: '/faculties',
                 element: <Faculties />
             },
+
+            // Admin routes
             {
-                // path: "/admin",
-                // element: admin layout
+                path: "/admin",
+                element: <AdminLayout />,
+                children: [
+                    {
+                        path: "/admin/dashboard",
+                        element: <Dashboard />
+                    }
+                ]
             }
         ]
     }

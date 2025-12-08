@@ -3,16 +3,18 @@ import { NavLink } from 'react-router-dom';
 
 const Navbar = () => {
     return (
-        <div className="navbar bg-base-100 shadow-sm">
-            <div className="flex-1">
-                <a className="btn btn-ghost text-xl">daisyUI</a>
-            </div>
-            <div className="flex-none">
-                <ul className="menu menu-horizontal px-1">
-                    <li><NavLink to="/notice">Notice</NavLink></li>
-                    <li><NavLink to="/contact">Contact</NavLink></li>
-                    <li><NavLink to="/faculties">Faculties</NavLink></li>
-                </ul>
+        <div>
+            <div className="navbar bg-base-100 shadow-sm">
+                <div className="flex-1">
+                    <a className="btn btn-ghost text-xl">daisyUI</a>
+                </div>
+                <div className="flex-none">
+                    <ul className="menu menu-horizontal px-1">
+                        <li><NavLink to="/notice">Notice</NavLink></li>
+                        <li><NavLink to="/contact">Contact</NavLink></li>
+                        <li><NavLink to="/faculties">Faculties</NavLink></li>
+                    </ul>
+                </div>
             </div>
         </div>
     );
