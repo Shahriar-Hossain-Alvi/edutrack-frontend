@@ -1,3 +1,5 @@
+# EduTrack - Academic Management System (AMS)
+
 
 # How to run 
 ```
