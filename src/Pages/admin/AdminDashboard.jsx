@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Dashboard = () => {
+const AdminDashboard = () => {
     return (
         <div>
             <details className="collapse bg-base-100 border border-base-300" name="my-accordion-det-1" open>
@@ -57,4 +57,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard;
+export default AdminDashboard;

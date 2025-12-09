@@ -6,7 +6,9 @@ import Notice from "../../pages/public/Notice";
 import Contact from "../../pages/public/Contact";
 import Faculties from "../../pages/public/Faculties";
 import AdminLayout from "../layout/AdminLayout";
-import Dashboard from "../../pages/admin/Dashboard";
+import AdminDashboard from "../../pages/admin/AdminDashboard";
+import TeacherLayout from "../layout/TeacherLayout";
+import TeacherDashboard from "../../pages/teacher/TeacherDashboard"
 
 const router = createBrowserRouter([
     {
@@ -38,7 +40,19 @@ const router = createBrowserRouter([
                 children: [
                     {
                         path: "/admin/dashboard",
-                        element: <Dashboard />
+                        element: <AdminDashboard />
+                    }
+                ]
+            },
+
+            // Teacher routes
+            {
+                path: "/teacher",
+                element: <TeacherLayout />,
+                children: [
+                    {
+                        path: "dashboard",
+                        element: <TeacherDashboard />
                     }
                 ]
             }
