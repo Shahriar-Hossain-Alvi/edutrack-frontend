@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import useAuth from "./useAuth";
+import useAuth from "./useAuth.jsx";
 
 
 const axiosSecure = axios.create({
@@ -11,11 +11,13 @@ const axiosSecure = axios.create({
 
 const useAxiosSecure = () => {
     const navigate = useNavigate();
-    const {setLoading, logout} = useAuth();
+    const {
+        setLoading, 
+        logout
+    } = useAuth();
 
     axiosSecure.interceptors.request.use((config) => {
         // browser attaches token to request automatically because the token is saved as HTTPOnly cookie.
-        
         return config;
     }, (error) => {
         return Promise.reject(error);
@@ -39,3 +41,4 @@ const useAxiosSecure = () => {
     return axiosSecure;
 }
 
+export default useAxiosSecure;

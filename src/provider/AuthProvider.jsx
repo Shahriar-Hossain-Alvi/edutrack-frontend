@@ -1,5 +1,5 @@
-import React, { createContext, useState } from 'react';
-import useAxiosPublic from '../hooks/useAxiosPublic';
+import { createContext, useState } from 'react';
+
 
 
 export const AuthContext = createContext(null);
@@ -7,7 +7,15 @@ export const AuthContext = createContext(null);
 const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null); // set user
     const [loading, setLoading] = useState(true); // for loading spinner
-    const axiosPublic = useAxiosPublic(); // axios instance with base url
+    const [roleVerified, setRoleVerified] = useState(null);
+
+
+    // fetch user after login
+    const fetchUser = async (axiosSecure) => {
+        const res = await axiosSecure.get('/users/me');
+        console.log(res.data);
+        setUser(res.data);
+    }
 
 
     // logout user 
@@ -22,7 +30,8 @@ const AuthProvider = ({ children }) => {
         setLoading,
         loading,
         user,
-        setUser
+        setUser,
+        fetchUser
     }
 
     return (

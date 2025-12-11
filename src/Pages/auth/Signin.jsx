@@ -2,15 +2,18 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEyeSlash } from 'react-icons/fa';
 import { FaEye } from 'react-icons/fa6';
-import useAxiosPublic from '../../hooks/useAxiosPublic';
-import useAuth from '../../hooks/useAuth';
+import useAxiosPublic from '../../hooks/useAxiosPublic.jsx';
+import useAuth from '../../hooks/useAuth.jsx';
+import useAxiosSecure from '../../hooks/useAxiosSecure.jsx';
 
 const Signin = () => {
     const [showPassword, setShowPassword] = useState(false);
     const axiosPublic = useAxiosPublic();
+    const axiosSecure = useAxiosSecure();
     const { register, handleSubmit, formState: { errors } } = useForm();
-    // const {loading, setLoading, setUser, user} = useAuth();
+    const { loading, setLoading, setUser, fetchUser } = useAuth();
 
+    console.log(loading);
 
 
     const signInUser = async (data) => {
@@ -22,8 +25,26 @@ const Signin = () => {
 
         console.log("Sending data from form", data);
 
-        const result = await axiosPublic.post('/login', formData);
-        console.log(result);
+        try {
+            const res = await axiosPublic.post('/login', formData);
+            console.log(res);
+
+            if (res.data.message === "Login successful") {
+                // const user_res = await axiosSecure.get('/users/me');
+                // console.log(user_res);
+
+                // setUser(user_res);
+                await fetchUser(axiosSecure);
+                setLoading(false);
+            }
+
+        } catch (error) {
+            setLoading(false);
+            console.error(error);
+        }
+
+
+
     }
 
 
@@ -68,11 +89,11 @@ const Signin = () => {
 
                                 {
                                     showPassword ?
-                                        <button type='button' onClick={()=>setShowPassword(false)} className="btn btn-sm bg-base-100 btn-ghost absolute z-10 right-4 top-1/2 transform -translate-y-1/2 tooltip tooltip-right tooltip-primary" data-tip="Hide Password">
+                                        <button type='button' onClick={() => setShowPassword(false)} className="btn btn-sm bg-base-100 btn-ghost absolute z-10 right-4 top-1/2 transform -translate-y-1/2 tooltip tooltip-right tooltip-primary" data-tip="Hide Password">
                                             <FaEyeSlash />
                                         </button>
                                         :
-                                        <button type='button' onClick={()=>setShowPassword(true)} className="btn btn-sm bg-base-100 btn-ghost absolute z-10 right-4 top-1/2 transform -translate-y-1/2 tooltip tooltip-right tooltip-warning" data-tip="Show Password">
+                                        <button type='button' onClick={() => setShowPassword(true)} className="btn btn-sm bg-base-100 btn-ghost absolute z-10 right-4 top-1/2 transform -translate-y-1/2 tooltip tooltip-right tooltip-warning" data-tip="Show Password">
                                             <FaEye />
                                         </button>
                                 }

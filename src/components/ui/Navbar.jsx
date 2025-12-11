@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import ThemeSwitch from './ThemeSwitch';
 import useTheme from '../../hooks/useTheme';
 import { FaMoon, FaSun } from 'react-icons/fa6';
+import eduTrack_logo from "../../assets/edutrack_logo.png";
 
 const Navbar = () => {
     const [theme, setTheme] = useTheme();
@@ -13,9 +13,11 @@ const Navbar = () => {
 
     return (
         <div>
-            <div className="navbar bg-base-100 shadow-sm">
+            <div className="navbar bg-base-100 shadow-sm ">
                 <div className="flex-1">
-                    <a className="btn btn-ghost text-xl">daisyUI</a>
+                    <NavLink to="/" className="max-h-16 text-xl">
+                        <img src={eduTrack_logo} className='max-h-16' alt="edutrack logo" />
+                    </NavLink>
                 </div>
                 <div className="flex-none">
                     <ul className="menu menu-horizontal px-1">

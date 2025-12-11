@@ -1,8 +1,11 @@
 {
   "compilerOptions": {
+    "module": "nodenext",
+    "target": "es2022",
     "baseUrl": "./src",
     "checkJs": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "moduleResolution": "nodenext",
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*", "./*.d.ts"]
 }
