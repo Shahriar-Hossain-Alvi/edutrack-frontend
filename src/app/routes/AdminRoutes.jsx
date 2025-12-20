@@ -2,6 +2,8 @@ import { Route } from "react-router-dom";
 import AdminDashboard from "../../pages/admin/AdminDashboard.jsx";
 import AdminLayout from "../layout/AdminLayout.jsx";
 import PrivateRoutes from "../../components/RouteHandlers/PrivateRoutes.jsx";
+import AddUser from "../../pages/admin/AddUser.jsx";
+import DepartmentsAndSemesters from "../../pages/admin/DepartmentsAndSemesters.jsx";
 
 
 const AdminRoutes = (
@@ -16,10 +18,10 @@ const AdminRoutes = (
 
         <Route index element={<AdminDashboard />} />
         {/* <Route index element={<AdminDashboard />} /> */}
-        {/* <Route path="departments" element={<AdminDashboard />} /> */}
+        <Route path="departmentsAndSemesters" element={<DepartmentsAndSemesters />} />
         {/* <Route path="subjects" element={<AdminDashboard />} /> */}
         {/* <Route path="assignSubject" element={<AdminDashboard />} /> */}
-        {/* <Route path="addUser" element={<AdminDashboard />} /> */}
+        <Route path="addUser" element={<AddUser />} />
         {/* <Route path="allUser" element={<AdminDashboard />} /> */}
         {/* <Route path="insertMarks" element={<AdminDashboard />} /> */}
         {/* <Route path="results" element={<AdminDashboard />} /> */}

@@ -14,7 +14,7 @@ const AdminLayout = () => {
     const { logout } = useAuth();
     const navigate = useNavigate();
 
-    const handleLogout = async() => {
+    const handleLogout = async () => {
         await logout();
         navigate('/signin');
     }
@@ -37,13 +37,13 @@ const AdminLayout = () => {
             <li>
                 <Link to="/admin" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Dashboard">
                     <MdDashboard className='w-4 h-4' />
-                    <span   className="is-drawer-close:hidden">Dashboard</span>
+                    <span className="is-drawer-close:hidden">Dashboard</span>
                 </Link>
             </li>
 
 
             <li>
-                <Link to="/admin/departments" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Departments & Semesters">
+                <Link to="/admin/departmentsAndSemesters" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Departments & Semesters">
                     <FaBuilding className='w-4 h-4' />
                     <span className="is-drawer-close:hidden">Departments & Semesters</span>
                 </Link>
