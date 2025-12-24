@@ -5,6 +5,7 @@ import CreateDepartment from '../../components/pageComponents/DepartmentPage/Cre
 import CreateSemester from '../../components/pageComponents/DepartmentPage/CreateSemester.jsx';
 import DepartmentTable from '../../components/pageComponents/DepartmentPage/DepartmentTable.jsx';
 import SemesterTable from '../../components/pageComponents/DepartmentPage/SemesterTable.jsx';
+import SectionHeader from '../../utils/SectionHeader/SectionHeader.jsx';
 
 const DepartmentsAndSemesters = () => {
     const axiosSecure = useAxiosSecure();
@@ -35,7 +36,7 @@ const DepartmentsAndSemesters = () => {
             {/* DEPARTMENTS */}
             <div>
                 <div className='flex justify-between'>
-                    <h1 className='text-3xl font-bold'>Departments</h1>
+                    <SectionHeader section_title='Departments' />
 
                     <CreateDepartment allDepartmentsRefetch={allDepartmentsRefetch} />
                 </div>
@@ -59,7 +60,7 @@ const DepartmentsAndSemesters = () => {
             <div className='mt-10'>
 
                 <div className='flex justify-between'>
-                    <h1 className='text-3xl font-bold'>Semesters</h1>
+                    <SectionHeader section_title='Semesters' />
 
                     <CreateSemester totalSemestersRefetch={totalSemestersRefetch} />
                 </div>

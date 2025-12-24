@@ -170,7 +170,7 @@ const SemesterTable = ({ totalSemesters, totalSemestersRefetch }) => {
                 <div className="modal-box">
                     <h3 className="font-bold text-lg text-error uppercase">Confirm!!!</h3>
                     <p className="py-4">Are you sure you want to delete "{selectedSemester?.semester_name.toUpperCase()}" Semester?</p>
-
+                    <p className='text-warning'>The semester is connected with other data such as Marks, Subjects, Students etc. Deleting it will create errors and failures in the system!!! Try Editing instead</p>
                     <div className="modal-action">
                         <button onClick={() => deleteSemester(selectedSemester?.id)} className={`btn ${isFormLoading && "btn-disabled"} btn-error`}>
                             {isFormLoading ? <AiOutlineLoading3Quarters className='animate-spin' /> : " Yes, delete it"}
