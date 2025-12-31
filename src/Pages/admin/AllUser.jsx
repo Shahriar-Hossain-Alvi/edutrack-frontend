@@ -3,13 +3,15 @@ import SectionHeader from '../../utils/SectionHeader/SectionHeader.jsx';
 import { useQuery } from '@tanstack/react-query';
 import toast from 'react-hot-toast';
 import useAxiosSecure from '../../hooks/useAxiosSecure.jsx';
+import { AllUserTableSkeleton } from '../../components/ui/Skeletons.jsx';
+import errorMessageParser from '../../utils/errorMessageParser/errorMessageParser.js';
 // @ts-ignore
 import defaultImage from "../../assets/blank-profile-picture.png";
-import { AllUserTableSkeleton } from '../../components/ui/Skeletons.jsx';
+import { Link } from 'react-router-dom';
 
 const AllUser = () => {
     const axiosSecure = useAxiosSecure();
-    const [allUserFilter, setAllUserFilter] = useState("");
+    const [allUserFilter, setAllUserFilter] = useState(localStorage.getItem("allUserFilter") || "");
 
     const { data: allUser, isError: isAllUserError, isFetching: isAllUserFetching, error: allUserError } = useQuery({
         queryKey: ['allUser', allUserFilter],
@@ -18,8 +20,6 @@ const AllUser = () => {
             return res.data;
         }
     })
-
-    console.log(allUser);
 
     useEffect(() => {
         if (isAllUserError) {
@@ -30,6 +30,8 @@ const AllUser = () => {
         }
     }, [isAllUserError])
 
+    console.log(isAllUserFetching);
+
     return (
         <div>
             <SectionHeader section_title='All User' />
@@ -38,7 +40,9 @@ const AllUser = () => {
             {/* All User Table */}
             <div className='flex items-center gap-2'>
                 <h4 className="">Filter by Role: </h4>
-                <select className='select' value={allUserFilter} onChange={(e) => setAllUserFilter(e.target.value)}>
+                <select className='select' value={allUserFilter} onChange={(e) => {
+                    localStorage.setItem("allUserFilter", e.target.value); setAllUserFilter(e.target.value)
+                }}>
                     <option value="">All</option>
                     <option value="admin">Admin</option>
                     <option value="student">Student</option>
@@ -85,9 +89,9 @@ const AllUser = () => {
 
                                             {/* Department */}
                                             <td className='uppercase'>
-                                                {user.role === "student" && ((user?.student?.department) ? user?.student?.department?.department_name : <span className='text-error'>Not Assigned</span>)}
+                                                {user.role === "student" && ((user?.student?.department) ? user?.student?.department?.department_name : <p className='text-error'>Not Assigned</p>)}
 
-                                                {user.role === "teacher" && ((user?.teacher?.department) ? user?.teacher?.department?.department_name : <span className='text-error'>Not Assigned</span>)}
+                                                {user.role === "teacher" && ((user?.teacher?.department) ? user?.teacher?.department?.department_name : <p className='text-error'>Not Assigned</p>)}
                                             </td>
                                             <td>
                                                 {user.role === "student" &&
@@ -106,7 +110,14 @@ const AllUser = () => {
                                                 }
                                             </td>
                                             <td>
-                                                <button className="btn btn-info btn-xs">Details</button>
+                                                {
+                                                    user?.role !== "admin" &&
+                                                    <Link
+                                                        to={`/admin/user/${user.id}`}
+                                                        state={{ userData: user }} // pass the user data to the user details page
+                                                        className="btn btn-info btn-xs"
+                                                    >Details
+                                                    </Link>}
                                             </td>
                                         </tr>
                                     )
