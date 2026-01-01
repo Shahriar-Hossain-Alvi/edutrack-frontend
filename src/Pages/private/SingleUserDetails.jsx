@@ -6,7 +6,7 @@ import SectionHeader from "../../utils/SectionHeader/SectionHeader.jsx";
 import { FaEdit } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
@@ -18,52 +18,83 @@ import errorMessageParser from "../../utils/errorMessageParser/errorMessageParse
 const SingleUserDetails = () => {
     const { id } = useParams();
     const axiosSecure = useAxiosSecure();
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [isFormLoading, setIsFormLoading] = useState(false);
-
+    const { register, handleSubmit, reset } = useForm();
 
     // Get the user details using the id
-    const { data: singleUserDetails, isPending, isError, error } = useQuery({
+    const { data: singleUserDetails, isPending, isError, error, refetch } = useQuery({
         queryKey: ['user', id],
         queryFn: async () => {
             const res = await axiosSecure(`/users/${id}`);
-            console.log(res);
-
             return res.data;
         },
         enabled: !!id, // Enable the query only when the id is available
     })
-    console.log(singleUserDetails);
 
+    // skeleton
     if (isPending) {
         return <SingleUserDetailsSkeleton />;
     }
 
+    // Error Message
     if (isError) {
         const message = errorMessageParser(error);
         return <h2 className="text-error text-2xl text-center">{message || 'User Details not found'}</h2>;
     }
 
+    // Destructure the user details
     const { email, role, student, teacher, username, is_active } = singleUserDetails;
 
+    // user image
     const userImage = student && student.photo_url || teacher && teacher.photo_url;
+
 
     // user details update
     const updateUserDetails = async (data) => {
         const updatedUserData = {};
 
-        if (data.updatedEmail !== email) updatedUserData.email = data.updatedEmail;
-        if (data.updatedUsername !== username) updatedUserData.username = data.updatedUsername;
+        if (data.updatedEmail !== email) {
+            updatedUserData.email = data.updatedEmail
+            updatedUserData.username = data.updatedEmail
+        };
 
-        const account_status = data.update_account_status === 'active' ? true : false;
+        const account_status = data.updateAccountStatus === 'active' ? true : false;
 
         if (account_status !== is_active) updatedUserData.is_active = account_status;
 
-        if (Object.keys(updatedUserData).length === 0) return toast.error('No data to update');
+        if (Object.keys(updatedUserData).length === 0) {
+            // @ts-ignore
+            document.getElementById('update_user_details_modal').close();
+            return toast.error('Nothing changed in the form. Cancelling update.');
+        };
 
-        console.log(updatedUserData);
-
+        try {
+            setIsFormLoading(true);
+            const res = await axiosSecure.patch(`/users/${id}`, updatedUserData);
+            console.log(res);
+            // @ts-ignore
+            document.getElementById('update_user_details_modal').close();
+            refetch();
+            // @ts-ignore
+            toast.success(res?.data?.message);
+        } catch (error) {
+            console.log(error);
+            // @ts-ignore
+            document.getElementById('update_user_details_modal').close();
+            const message = errorMessageParser(error);
+            toast.error(message || 'Failed to update user details');
+        } finally {
+            setIsFormLoading(false);
+            reset({
+                updatedEmail: updatedUserData.email || email,
+                updateAccountStatus: updatedUserData.is_active !== undefined
+                    ? (updatedUserData.is_active ? "active" : "disable")
+                    : (is_active ? "active" : "disable")
+            });
+        }
     }
+
+
     return (
         <div>
             <div className="place-self-center relative">
@@ -276,7 +307,7 @@ const SingleUserDetails = () => {
 
 
 
-            {/* User data Update Modal (Account Status) */}
+            {/* User data Update Modal (Email, Account Status) */}
             <dialog id="update_user_details_modal" className="modal">
                 <div className="modal-box">
                     <h3 className="font-bold text-lg text-warning">Edit User Details</h3>
@@ -286,7 +317,7 @@ const SingleUserDetails = () => {
                         {/* email */}
                         <div className="w-full space-y-4">
                             <div>
-                                <label>Email Address <span className="text-warning text-xs">(Email and Username should be same)</span></label>
+                                <label>Email Address <span className="text-warning text-xs block">(Editing/Updating the email address will also update the username)</span></label>
                                 <input
                                     type="email"
                                     className="input input-bordered w-full mt-2"
@@ -295,23 +326,12 @@ const SingleUserDetails = () => {
                                 />
                             </div>
 
-                            {/* username */}
-                            <div>
-                                <label>Username <span className="text-warning text-xs">(Email and Username should be same)</span></label>
-                                <input
-                                    type="email"
-                                    className="input input-bordered w-full mt-2"
-                                    defaultValue={username}
-                                    {...register("updatedUsername")}
-                                />
-                            </div>
-
                             {/* account status */}
                             <div>
                                 <label className="label mr-2">Account Status</label>
-                                <select className="select" {...register("update_account_status")} defaultValue={is_active ? "active" : "disable"}>
-                                    <option value="active">Active</option>
-                                    <option value="disable">Disable</option>
+                                <select className="select" {...register("updateAccountStatus")} >
+                                    <option value="active">Active 🟢</option>
+                                    <option value="disable">Disable 🔴</option>
                                 </select>
                             </div>
                         </div>

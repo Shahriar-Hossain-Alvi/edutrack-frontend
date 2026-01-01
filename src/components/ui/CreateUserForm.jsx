@@ -52,8 +52,8 @@ const CreateUserForm = ({
                 {/* Account Status (Active by default) */}
                 <label className="label">Active Account<span className="text-red-600">*</span></label>
                 <select className="select" {...register("account_status")} defaultValue="active">
-                    <option value="active">Active</option>
-                    <option value="disable">Disable</option>
+                    <option value="active">Active 🟢</option>
+                    <option value="disable">Disable 🔴</option>
                 </select>
 
                 {/* Next fields button */}
