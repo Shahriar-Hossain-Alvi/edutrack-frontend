@@ -89,7 +89,7 @@ const CreateStudentTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
             present_address: data.present_address || "",
             permanent_address: data.permanent_address || "",
             mobile_number: data.mobile_number || "",
-            date_of_birth: data.date_of_birth ? new Date(data.date_of_birth).toISOString() : null,
+            date_of_birth: data.date_of_birth ? data.date_of_birth : null,
 
             // required fields for user table
             user: {

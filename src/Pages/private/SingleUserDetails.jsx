@@ -13,13 +13,13 @@ import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 import LoadingSpinner from "../../components/ui/LoadingSpinner.jsx";
 import { SingleUserDetailsSkeleton } from "../../components/ui/Skeletons.jsx";
 import errorMessageParser from "../../utils/errorMessageParser/errorMessageParser.js";
+import UpdateUserAuthDetailsByAdminModal from "../../components/pageComponents/SingleUserDetailspage/UpdateUserAuthDetailsByAdminModal.jsx";
+import UpdateUsersAllDetailsModal from "../../components/pageComponents/SingleUserDetailspage/UpdateUsersAllDetailsModal.jsx";
 
 
 const SingleUserDetails = () => {
     const { id } = useParams();
     const axiosSecure = useAxiosSecure();
-    const [isFormLoading, setIsFormLoading] = useState(false);
-    const { register, handleSubmit, reset } = useForm();
 
     // Get the user details using the id
     const { data: singleUserDetails, isPending, isError, error, refetch } = useQuery({
@@ -49,52 +49,6 @@ const SingleUserDetails = () => {
     const userImage = student && student.photo_url || teacher && teacher.photo_url;
 
 
-    // user details update
-    const updateUserDetails = async (data) => {
-        const updatedUserData = {};
-
-        if (data.updatedEmail !== email) {
-            updatedUserData.email = data.updatedEmail
-            updatedUserData.username = data.updatedEmail
-        };
-
-        const account_status = data.updateAccountStatus === 'active' ? true : false;
-
-        if (account_status !== is_active) updatedUserData.is_active = account_status;
-
-        if (Object.keys(updatedUserData).length === 0) {
-            // @ts-ignore
-            document.getElementById('update_user_details_modal').close();
-            return toast.error('Nothing changed in the form. Cancelling update.');
-        };
-
-        try {
-            setIsFormLoading(true);
-            const res = await axiosSecure.patch(`/users/${id}`, updatedUserData);
-            console.log(res);
-            // @ts-ignore
-            document.getElementById('update_user_details_modal').close();
-            refetch();
-            // @ts-ignore
-            toast.success(res?.data?.message);
-        } catch (error) {
-            console.log(error);
-            // @ts-ignore
-            document.getElementById('update_user_details_modal').close();
-            const message = errorMessageParser(error);
-            toast.error(message || 'Failed to update user details');
-        } finally {
-            setIsFormLoading(false);
-            reset({
-                updatedEmail: updatedUserData.email || email,
-                updateAccountStatus: updatedUserData.is_active !== undefined
-                    ? (updatedUserData.is_active ? "active" : "disable")
-                    : (is_active ? "active" : "disable")
-            });
-        }
-    }
-
-
     return (
         <div>
             <div className="place-self-center relative">
@@ -103,8 +57,10 @@ const SingleUserDetails = () => {
                 {/* User Details Edit Button */}
                 <div className="tooltip absolute -right-9 -top-2" data-tip="Edit USER Details">
                     <button
-                        // @ts-ignore
-                        onClick={() => document.getElementById('update_user_details_modal').showModal()}
+                        onClick={() => {
+                            // @ts-ignore
+                            document.getElementById('update_user_details_modal').showModal()
+                        }}
                         className="btn btn-sm btn-ghost hover:bg-transparent border-0 shadow-none  hover:text-success ">
                         <FaEdit />
                     </button>
@@ -135,10 +91,10 @@ const SingleUserDetails = () => {
                                 {/* ID */}
                                 <tr className="text-lg hover:bg-base-300">
                                     <th>
-                                        <p className="font-bold">ID:</p>
+                                        <p className="font-bold">User ID & {role.toUpperCase()} ID:</p>
                                     </th>
                                     <td>
-                                        {student && student.id || teacher && teacher.id}
+                                        {singleUserDetails?.id} & {student && student.id || teacher && teacher.id}
                                     </td>
                                 </tr>
 
@@ -192,7 +148,10 @@ const SingleUserDetails = () => {
                         <SectionHeader section_title='Other Details' />
 
                         <div className="tooltip absolute -right-9 -top-2" data-tip={`Edit ${role.toUpperCase()} Details`}>
-                            <button className="btn btn-sm btn-ghost hover:bg-transparent border-0 shadow-none  hover:text-success ">
+                            <button
+                                // @ts-ignore
+                                onClick={() => document.getElementById("update_users_other_details_modal").showModal()}
+                                className="btn btn-sm btn-ghost hover:bg-transparent border-0 shadow-none  hover:text-success ">
                                 <FaEdit />
                             </button>
                         </div>
@@ -309,42 +268,15 @@ const SingleUserDetails = () => {
 
             {/* User data Update Modal (Email, Account Status) */}
             <dialog id="update_user_details_modal" className="modal">
-                <div className="modal-box">
-                    <h3 className="font-bold text-lg text-warning">Edit User Details</h3>
-
-
-                    <form className='space-y-3 mt-4' onSubmit={handleSubmit(updateUserDetails)}>
-                        {/* email */}
-                        <div className="w-full space-y-4">
-                            <div>
-                                <label>Email Address <span className="text-warning text-xs block">(Editing/Updating the email address will also update the username)</span></label>
-                                <input
-                                    type="email"
-                                    className="input input-bordered w-full mt-2"
-                                    defaultValue={email}
-                                    {...register("updatedEmail")}
-                                />
-                            </div>
-
-                            {/* account status */}
-                            <div>
-                                <label className="label mr-2">Account Status</label>
-                                <select className="select" {...register("updateAccountStatus")} >
-                                    <option value="active">Active 🟢</option>
-                                    <option value="disable">Disable 🔴</option>
-                                </select>
-                            </div>
-                        </div>
-                        <button className={`btn ${isFormLoading && "btn-disabled"} btn-success w-full`} type='submit' disabled={isFormLoading}>
-                            {isFormLoading ? <AiOutlineLoading3Quarters className='animate-spin' /> : "Update"}
-                        </button>
-                    </form>
-
-                    <div className="modal-action">
-                        <form method="dialog"><button className="btn btn-error">Cancel</button></form>
-                    </div>
-                </div>
+                <UpdateUserAuthDetailsByAdminModal singleUserDetails={singleUserDetails} refetch={refetch} id={id} />
             </dialog>
+
+            {/* Other data (Teacher/Student Tables data) update Modal  */}
+            <dialog id="update_users_other_details_modal" className="modal">
+                <UpdateUsersAllDetailsModal singleUserDetails={singleUserDetails} refetch={refetch} id={id} />
+            </dialog>
+
+
         </div >
     );
 };

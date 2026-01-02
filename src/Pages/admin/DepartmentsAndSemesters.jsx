@@ -21,7 +21,7 @@ const DepartmentsAndSemesters = () => {
     })
 
     // SEMESTERS query
-    const { data: totalSemesters, isPending: isSemesterPending, error: semesterError, isError: isSemesterError, refetch: totalSemestersRefetch } = useQuery({
+    const { data: allSemesters, isPending: isSemesterPending, error: semesterError, isError: isSemesterError, refetch: totalSemestersRefetch } = useQuery({
         queryKey: ['totalSemesters'],
         queryFn: async () => {
             const res = await axiosSecure('/semesters/');
@@ -68,10 +68,10 @@ const DepartmentsAndSemesters = () => {
                 {(isSemesterPending) && <SemestersSkeleton />}
                 {isSemesterError && <h4 className='text-error text-center text-lg'>An Error Occurred: {semesterError?.message}</h4>}
                 {
-                    totalSemesters?.length === 0 ?
+                    allSemesters?.length === 0 ?
                         <h4 className='text-error text-center text-lg'>No semesters found</h4>
                         :
-                        (!isSemesterPending && <SemesterTable totalSemesters={totalSemesters} totalSemestersRefetch={totalSemestersRefetch} />)
+                        (!isSemesterPending && <SemesterTable allSemesters={allSemesters} totalSemestersRefetch={totalSemestersRefetch} />)
                 }
 
 
