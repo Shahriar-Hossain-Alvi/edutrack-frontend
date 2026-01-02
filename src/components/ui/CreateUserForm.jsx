@@ -6,7 +6,7 @@ const CreateUserForm = ({
     handleSubmit,
     errors, register,
     formLoading, allDepartments,
-    isDepartmentsFetching,
+    isDepartmentsPending,
     role, userSpecificData = {}
 }) => {
     const [showNextForm, setShowNextForm] = useState(false);
@@ -52,8 +52,8 @@ const CreateUserForm = ({
                 {/* Account Status (Active by default) */}
                 <label className="label">Active Account<span className="text-red-600">*</span></label>
                 <select className="select" {...register("account_status")} defaultValue="active">
-                    <option value="active">Active</option>
-                    <option value="disable">Disable</option>
+                    <option value="active">Active 🟢</option>
+                    <option value="disable">Disable 🔴</option>
                 </select>
 
                 {/* Next fields button */}
@@ -99,7 +99,7 @@ const CreateUserForm = ({
                 <div className={`w-full`}>
                     <label className="label">Select Department</label>
                     {
-                        isDepartmentsFetching ?
+                        isDepartmentsPending ?
                             <div className="skeleton h-10"></div>
                             :
                             <select

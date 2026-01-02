@@ -7,7 +7,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import toast from 'react-hot-toast';
 import errorMessageParser from '../../../utils/errorMessageParser/errorMessageParser.js';
 
-const SemesterTable = ({ totalSemesters, totalSemestersRefetch }) => {
+const SemesterTable = ({ allSemesters, totalSemestersRefetch }) => {
     const axiosSecure = useAxiosSecure();
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [selectedSemester, setSelectedSemester] = useState(null); // state for editing
@@ -97,7 +97,7 @@ const SemesterTable = ({ totalSemesters, totalSemestersRefetch }) => {
                     <tbody>
                         {/* rows */}
                         {
-                            totalSemesters?.map((semester, index) =>
+                            allSemesters?.map((semester, index) =>
                                 <tr key={semester?.id}>
                                     <th>{index + 1}</th>
                                     <td className='capitalize'>{semester?.semester_name}</td>
