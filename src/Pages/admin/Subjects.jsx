@@ -19,12 +19,23 @@ const Subjects = () => {
     const [selectedSubject, setSelectedSubject] = useState(null); // state for editing
     const [isFormLoading, setIsFormLoading] = useState(false);
 
+    // Filter
+    const [filters, setFilters] = useState({
+        semester_id: "",
+        subject_credits: "",
+        search: ""
+    });
 
     // Subjects query
     const { data: allSubjects, isPending: isSubjectsPending, error: subjectsError, isError: isSubjectsError, refetch: allSubjectsRefetch } = useQuery({
-        queryKey: ['allSubjects'],
+        queryKey: ['allSubjects', filters],
         queryFn: async () => {
-            const res = await axiosSecure('/subjects/');
+            const params = new URLSearchParams();
+            if (filters.semester_id) params.append('semester_id', filters.semester_id);
+            if (filters.subject_credits) params.append('subject_credits', filters.subject_credits);
+            if (filters.search) params.append('search', filters.search);
+
+            const res = await axiosSecure(`/subjects/?${params.toString()}`);
             return res.data;
         }
     })
@@ -53,6 +64,12 @@ const Subjects = () => {
             toast.error(message || "Failed to fetch semesters");
         }
     }, [isSubjectsError])
+
+    // Handler to update filters
+    const handleFilterChange = (e) => {
+        const { name, value } = e.target;
+        setFilters(prev => ({ ...prev, [name]: value }));
+    };
 
     // open update subject modal
     const openUpdateSubjectModal = (sub) => {
@@ -141,6 +158,67 @@ const Subjects = () => {
 
                 <CreateSubject allSubjectsRefetch={allSubjectsRefetch} />
             </div>
+
+            {/* TODO: add filter by credits, semester, subject code(letter part), search by subject title */}
+            {/* 3. Filter UI Section */}
+            <div className="grid grid-cols-1 md:grid-cols-9 gap-4 mb-6 bg-base-200 p-4 rounded-lg">
+
+                {/* Semester Select */}
+                <div className="form-control md:col-span-1">
+                    <label className="label">Semester</label>
+                    <select
+                        name="semester_id"
+                        className="select select-bordered"
+                        value={filters.semester_id}
+                        onChange={handleFilterChange}
+                    >
+                        <option value="">All</option>
+                        {allSemesters?.map(semester => (
+                            <option key={semester.id} value={semester.id}>Semester {semester.semester_number}</option>
+                        ))}
+                    </select>
+                </div>
+
+                {/* Credits Input (Searchable Number) */}
+                <div className="form-control md:col-span-3">
+                    <label className="label">Credits (e.g. 1.5, 3.0)</label>
+                    <input
+                        type="number"
+                        step="0.5"
+                        min={0}
+                        name="subject_credits"
+                        placeholder="Search by subject credits"
+                        className="input input-bordered"
+                        value={filters.subject_credits}
+                        onChange={handleFilterChange}
+                    />
+                </div>
+
+                {/* Search Title/Code */}
+                <div className="form-control md:col-span-4">
+                    <label className="label">Search Title or Code</label>
+                    <input
+                        type="text"
+                        name="search"
+                        placeholder="Math, CSE-101..."
+                        className="input input-bordered w-full"
+                        value={filters.search}
+                        onChange={handleFilterChange}
+                    />
+                </div>
+
+                {/* Reset Button */}
+                <div className="md:col-span-1 md:place-self-center md:mt-5">
+                    <button
+                        className="btn btn-error text-sm"
+                        onClick={() => setFilters({ semester_id: "", subject_credits: "", search: "" })}
+                    >
+                        Clear Filters
+                    </button>
+                </div>
+            </div>
+
+
 
             {/* Show All Subjects List */}
             <div className="overflow-x-auto">
