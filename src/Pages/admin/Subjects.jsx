@@ -10,6 +10,7 @@ import { FaEdit } from "react-icons/fa";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import useAuth from "../../hooks/useAuth.jsx";
 import { useForm } from "react-hook-form";
+import { useDebounce } from "../../hooks/useDebounce.jsx";
 
 
 const Subjects = () => {
@@ -26,14 +27,20 @@ const Subjects = () => {
         search: ""
     });
 
+    // debounce the search string by 500ms(wait 500ms before making the request send after user stop typing)
+    const debouncedSearch = useDebounce(filters.search, 500);
+
     // Subjects query
     const { data: allSubjects, isPending: isSubjectsPending, error: subjectsError, isError: isSubjectsError, refetch: allSubjectsRefetch } = useQuery({
-        queryKey: ['allSubjects', filters],
+        queryKey: ['allSubjects', filters.semester_id, filters.subject_credits, debouncedSearch],
         queryFn: async () => {
             const params = new URLSearchParams();
+
             if (filters.semester_id) params.append('semester_id', filters.semester_id);
             if (filters.subject_credits) params.append('subject_credits', filters.subject_credits);
-            if (filters.search) params.append('search', filters.search);
+
+            // Use the debounced value for the API call
+            if (debouncedSearch) params.append('search', debouncedSearch);
 
             const res = await axiosSecure(`/subjects/?${params.toString()}`);
             return res.data;
@@ -149,7 +156,7 @@ const Subjects = () => {
         }
     }
 
-    console.log(allSubjects);
+    // console.log(allSubjects);
 
     return (
         <div>
