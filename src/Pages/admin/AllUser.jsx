@@ -14,19 +14,21 @@ const AllUser = () => {
     // const [allUserFilter, setAllUserFilter] = useState(localStorage.getItem("allUserFilter") || "");
     // Filter
     const [filters, setFilters] = useState({
-        user_role_filter: "",
-        department_search: ""
+        user_role_filter: localStorage.getItem("user_role_filter") || "",
+        department_search: "",
+        user_order_by_filter: localStorage.getItem("user_order_by_filter") || ""
     });
 
     // debounce the search string by 500ms(wait 500ms before making the request send after user stop typing)
     const debouncedSearch = useDebounce(filters.department_search, 500);
 
     const { data: allUser, isError: isAllUserError, isPending: isAllUserPending, error: allUserError } = useQuery({
-        queryKey: ['allUser', filters.user_role_filter, debouncedSearch],
+        queryKey: ['allUser', filters.user_role_filter, filters.user_order_by_filter, debouncedSearch],
         queryFn: async () => {
             const params = new URLSearchParams();
 
             if (filters.user_role_filter) params.append('user_role', filters.user_role_filter);
+            if (filters.user_order_by_filter) params.append('order_by_filter', filters.user_order_by_filter);
 
             // Use the debounced value for the API call
             if (debouncedSearch) params.append('department_search', debouncedSearch);
@@ -64,7 +66,7 @@ const AllUser = () => {
             <div className="grid grid-cols-1 md:grid-cols-7 gap-4 mb-6 bg-base-200 p-4 rounded-lg">
 
                 {/* Role Filter */}
-                <div className='col-span-2'>
+                <div className='md:col-span-1'>
                     <label className="label">Filter by Role: </label>
                     <select
                         name='user_role_filter'
@@ -83,6 +85,22 @@ const AllUser = () => {
                     </select>
                 </div>
 
+                {/* Order by */}
+                <div className="md:col-span-1">
+                    <label className="label">Order By: </label>
+                    <select
+                        name='user_order_by_filter'
+                        className='select'
+                        value={filters.user_order_by_filter}
+                        onChange={(e) => {
+                            handleFilterChange(e);
+                            localStorage.setItem("user_order_by_filter", e.target.value);
+                        }}
+                    >
+                        <option value="asc">ASC ⬇️</option>
+                        <option value="desc">DESC ⬆️</option>
+                    </select>
+                </div>
 
                 {/* Search Title/Code */}
                 <div className="form-control md:col-span-4">
@@ -101,7 +119,11 @@ const AllUser = () => {
                 <div className="md:col-span-1 md:place-self-center md:mt-5">
                     <button
                         className="btn btn-error text-sm"
-                        onClick={() => setFilters({ user_role_filter: "", department_search: "" })}
+                        onClick={() => {
+                            setFilters({ user_role_filter: "", department_search: "", user_order_by_filter: "" })
+                            localStorage.removeItem("user_role_filter");
+                            localStorage.removeItem("order_by_filter");
+                        }}
                     >
                         Clear Filters
                     </button>
@@ -120,7 +142,7 @@ const AllUser = () => {
                             {/* head */}
                             <thead>
                                 <tr>
-                                    <th>#</th>
+                                    <th>ID</th>
                                     <th>Name</th>
                                     <th>Role</th>
                                     <th>Username/Email</th>
@@ -132,9 +154,9 @@ const AllUser = () => {
                             </thead>
                             <tbody>
                                 {
-                                    allUser?.length > 0 && allUser.map((user, index) =>
+                                    allUser?.length > 0 && allUser.map((user) =>
                                         <tr className="hover:bg-base-300" key={user.id}>
-                                            <td>{index + 1}</td>
+                                            <td>{user.id}</td>
 
                                             {/* Name */}
                                             <td>
