@@ -49,7 +49,8 @@ const CreateNewCourseAssignment = ({ allAssignedCoursesRefetch }) => {
         data: allTeachersForCourseAssignment,
         isFetching: isAllTeachersForCourseAssignmentFetching,
         error: allTeachersForCourseAssignmentError,
-        isError: isAllTeachersForCourseAssignmentError
+        isError: isAllTeachersForCourseAssignmentError,
+        refetch: allTeachersForCourseAssignmentRefetch
     } = useQuery({
         queryKey: ['allTeachersForCourseAssignment', debouncedTeacherSearch],
         queryFn: async () => {
@@ -71,7 +72,7 @@ const CreateNewCourseAssignment = ({ allAssignedCoursesRefetch }) => {
 
 
     // Fetch Subjects
-    const { data: allSubjects, isFetching: isAllSubjectsFetching, error: allSubjectsError, isError: isAllSubjectsError } = useQuery({
+    const { data: allSubjects, isFetching: isAllSubjectsFetching, error: allSubjectsError, isError: isAllSubjectsError, refetch: allSubjectsRefetch } = useQuery({
         queryKey: ['allSubjects', debouncedSubjectSearch],
         queryFn: async () => {
             if (!debouncedSubjectSearch) return [];
@@ -103,8 +104,8 @@ const CreateNewCourseAssignment = ({ allAssignedCoursesRefetch }) => {
                 subject_id: parseInt(data.subjectId),
                 department_id: parseInt(data.departmentId),
             };
-            await axiosSecure.post('/subject_offering/', payload);
-            toast.success('Course assigned successfully');
+            const res = await axiosSecure.post('/subject_offering/', payload);
+            toast.success(res?.data?.message || 'Course assigned successfully');
             allAssignedCoursesRefetch();
             // @ts-ignore
             document.getElementById('create_subject_offering_modal').close();
@@ -119,6 +120,9 @@ const CreateNewCourseAssignment = ({ allAssignedCoursesRefetch }) => {
             toast.error(message || 'Failed to assign course');
         } finally {
             setIsLoading(false);
+            allDepartmentsRefetch();
+            allTeachersForCourseAssignmentRefetch();
+            allSubjectsRefetch();
         }
     };
 
@@ -126,11 +130,11 @@ const CreateNewCourseAssignment = ({ allAssignedCoursesRefetch }) => {
     return (
         <div>
             {/* Create New Course Assignment Modal */}
-            <button className='btn btn-ghost btn-sm group/add-dept hover:bg-transparent border-0 tooltip tooltip-left' data-tip="Create New Course Assignment" onClick={() => {
+            <button className='btn btn-ghost btn-sm group/add-courseAssignment hover:bg-transparent border-0 tooltip tooltip-left' data-tip="Create New Course Assignment" onClick={() => {
                 // @ts-ignore
                 document.getElementById('create_subject_offering_modal').showModal()
             }}>
-                <FaPlus className='text-lg group-hover/add-dept:text-success' />
+                <FaPlus className='text-lg group-hover/add-courseAssignment:text-success' />
             </button>
 
             <dialog id="create_subject_offering_modal" className="modal">
