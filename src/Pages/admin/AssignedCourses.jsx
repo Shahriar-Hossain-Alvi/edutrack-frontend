@@ -11,6 +11,7 @@ import useAuth from "../../hooks/useAuth.jsx";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import UpdateCourseAssignment from "../../components/pageComponents/AssignedCourses/UpdateCourseAssignment.jsx";
 import { AssignedCoursesSkeleton } from "../../components/ui/Skeletons.jsx";
+import { useDebounce } from "../../hooks/useDebounce.jsx";
 
 
 const AssignedCourses = () => {
@@ -21,19 +22,25 @@ const AssignedCourses = () => {
 
     // Filter
     const [filters, setFilters] = useState({
-        // semester_id: "",
-        // subject_credits: "",
-        // search: "",
+        search: "",
+        department_id: "",
         course_assignment_order_by_filter: localStorage.getItem("course_assignment_order_by_filter") || ""
     });
 
+    // debounce the search string by 500ms(wait 500ms before making the request send after user stop typing)
+    const debouncedSearch = useDebounce(filters.search, 500);
+
     // Fetch all assigned courses
     const { data: allAssignedCourses, isPending: isAllAssignedCoursesPending, error: assignedCoursesError, isError: isAssignedCoursesError, refetch: allAssignedCoursesRefetch } = useQuery({
-        queryKey: ['allAssignedCourses', filters.course_assignment_order_by_filter],
+        queryKey: ['allAssignedCourses', filters.course_assignment_order_by_filter, filters.department_id, debouncedSearch],
         queryFn: async () => {
             const params = new URLSearchParams();
 
+            if (filters.department_id) params.append('filter_by_department', filters.department_id);
             if (filters.course_assignment_order_by_filter) params.append('order_by_filter', filters.course_assignment_order_by_filter);
+
+            // Use the debounced value for the API call
+            if (debouncedSearch) params.append('search', debouncedSearch);
 
             const res = await axiosSecure(`/subject_offering/?${params.toString()}`);
             return res.data;
@@ -113,24 +120,24 @@ const AssignedCourses = () => {
                 {/* 3. Filter UI Section */}
                 <div className="grid grid-cols-1 md:grid-cols-10 gap-4 mb-6 bg-base-200 p-4 rounded-lg">
 
-                    {/* Semester Select */}
-                    {/* <div className="form-control md:col-span-1">
-                        <label className="label">Semester</label>
+                    {/* Department Select */}
+                    <div className="form-control md:col-span-3">
+                        <label className="label">Filter by Assigned Department</label>
                         <select
-                            name="semester_id"
-                            className="select"
-                            value={filters.semester_id}
+                            name="department_id"
+                            className="select w-full uppercase"
+                            value={filters.department_id}
                             onChange={handleFilterChange}
                         >
                             <option value="">All</option>
-                            {allSemesters?.map(semester => (
-                                <option key={semester.id} value={semester.id}>Semester {semester.semester_number}</option>
+                            {allDepartments?.map(department => (
+                                <option key={department.id} value={department.id}>{department.department_name}</option>
                             ))}
                         </select>
-                    </div> */}
+                    </div>
 
                     {/* Order by */}
-                    <div className="md:col-span-1">
+                    <div className="md:col-span-2">
                         <label className="label">Order By: </label>
                         <select
                             name='course_assignment_order_by_filter'
@@ -147,17 +154,17 @@ const AssignedCourses = () => {
                     </div>
 
                     {/* Search Title/Code */}
-                    {/* <div className="form-control md:col-span-4">
-                        <label className="label">Search Title or Code</label>
+                    <div className="form-control md:col-span-4">
+                        <label className="label">Search By Teacher</label>
                         <input
                             type="text"
                             name="search"
-                            placeholder="Math, CSE-101..."
+                            placeholder="Teacher name.."
                             className="input input-bordered w-full"
                             value={filters.search}
                             onChange={handleFilterChange}
                         />
-                    </div> */}
+                    </div>
 
                     {/* Reset Button */}
                     <div className="md:col-span-1 md:place-self-center md:mt-5">
@@ -165,9 +172,8 @@ const AssignedCourses = () => {
                             className="btn btn-error text-sm"
                             onClick={() => {
                                 setFilters({
-                                    // semester_id: "", 
-                                    // subject_credits: "", 
-                                    // search: "", 
+                                    search: "",
+                                    department_id: "",
                                     course_assignment_order_by_filter: ""
                                 })
                                 localStorage.removeItem("course_assignment_order_by_filter");
