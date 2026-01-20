@@ -10,6 +10,7 @@ import { FaEdit } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth.jsx";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import UpdateCourseAssignment from "../../components/pageComponents/AssignedCourses/UpdateCourseAssignment.jsx";
+import { AssignedCoursesSkeleton } from "../../components/ui/Skeletons.jsx";
 
 
 const AssignedCourses = () => {
@@ -69,7 +70,7 @@ const AssignedCourses = () => {
 
             {/* Show all assigned courses */}
             <div>
-                {isAllAssignedCoursesPending ? <span className="loading loading-spinner loading-sm"></span> : ""}
+                {isAllAssignedCoursesPending && <AssignedCoursesSkeleton />}
 
                 {allAssignedCourses?.length === 0 && <div className="text-center py-4">No assigned courses found</div>}
 
@@ -147,18 +148,21 @@ const AssignedCourses = () => {
                                     )
                                 }
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Assigned <br /> Teacher</th>
-                                    <th>Assigned <br /> Subject</th>
-                                    <th>Assigned to <br /> (Department)</th>
-                                    <th>Semester</th>
-                                    <th>Assigned Date</th>
-                                    <th>Updated On<br /> (Assignment)</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </tfoot>
+                            {
+                                allAssignedCourses?.length > 10 &&
+                                <tfoot>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Assigned <br /> Teacher</th>
+                                        <th>Assigned <br /> Subject</th>
+                                        <th>Assigned to <br /> (Department)</th>
+                                        <th>Semester</th>
+                                        <th>Assigned Date</th>
+                                        <th>Updated On<br /> (Assignment)</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </tfoot>
+                            }
                         </table>
                     </div>
                 }
