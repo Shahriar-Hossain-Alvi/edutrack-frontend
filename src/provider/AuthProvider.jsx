@@ -46,7 +46,6 @@ const AuthProvider = ({ children }) => {
     const fetchUser = useCallback(async () => {
         try {
             const res = await axiosSecure.get('/users/me');
-            console.log(res);
             setUser(res?.data);
             return res?.data;
         } catch (error) {

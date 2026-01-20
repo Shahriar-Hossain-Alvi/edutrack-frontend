@@ -9,6 +9,7 @@ import { MdDelete } from "react-icons/md";
 import { FaEdit } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth.jsx";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import UpdateCourseAssignment from "../../components/pageComponents/AssignedCourses/UpdateCourseAssignment.jsx";
 
 
 const AssignedCourses = () => {
@@ -24,9 +25,6 @@ const AssignedCourses = () => {
             return res.data;
         }
     })
-
-    console.log(allAssignedCourses);
-    console.log(selectedSubjectOffering);
 
     useEffect(() => {
         if (isAssignedCoursesError) {
@@ -126,16 +124,10 @@ const AssignedCourses = () => {
 
                                             {/* Actions */}
                                             <td>
-                                                {/* update department Modal trigger */}
-                                                <button
-                                                    // onClick={() => openUpdateDepartmentModal(department)}
-                                                    className="btn btn-ghost hover:bg-transparent border-0 group/edit-dept">
-                                                    <FaEdit className='group-hover/edit-dept:text-success'
-                                                    />
-                                                </button>
+                                                {/* update course assignment Modal trigger */}
+                                                <UpdateCourseAssignment assignedCourse={assignedCourse} allAssignedCoursesRefetch={allAssignedCoursesRefetch} />
 
-
-                                                {/* Delete Department confirmation Modal */}
+                                                {/* Delete Course Assignment confirmation Modal */}
                                                 {
                                                     user?.role === "super_admin" &&
                                                     <>
