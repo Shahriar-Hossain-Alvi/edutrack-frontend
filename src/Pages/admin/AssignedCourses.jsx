@@ -153,7 +153,7 @@ const AssignedCourses = () => {
                         </select>
                     </div>
 
-                    {/* Search Title/Code */}
+                    {/* Search by Teacher name */}
                     <div className="form-control md:col-span-4">
                         <label className="label">Search By Teacher</label>
                         <input
@@ -301,7 +301,7 @@ const AssignedCourses = () => {
                             {(selectedSubjectOffering?.taught_by && (selectedSubjectOffering?.taught_by?.department?.department_name)?.split(/\s*[-\u2013\u2014]\s*/)[0]) || "N/A"}
                         </span> department <br /> as <span className="font-medium capitalize text-info">{selectedSubjectOffering?.subject.subject_title}</span> <span className="text-sm text-info italic">({selectedSubjectOffering?.subject?.subject_code})</span> teacher <br /> to <span className="text-info">{selectedSubjectOffering?.department.department_name.toUpperCase()}</span> department
                     </p>
-                    <p className='text-warning text-sm'>The course assignment is connected with other data such as Mark Inputs. Deleting it may create errors and failures in the system!!! Try Editing instead</p>
+                    <p className='text-warning text-sm font-semibold'>The course assignment is connected with other data such as Mark Inputs. Deleting it may create errors and failures in the system!!! Try Editing instead</p>
                     <div className="modal-action">
                         <button
                             onClick={() => deleteSubjectOffering(selectedSubjectOffering?.id)}
