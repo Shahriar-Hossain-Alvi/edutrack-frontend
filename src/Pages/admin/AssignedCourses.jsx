@@ -225,6 +225,7 @@ const AssignedCourses = () => {
                                             <td>
                                                 <h4>{assignedCourse.subject.subject_title}</h4>
                                                 <p className="opacity-60 text-xs xl:text-sm mt-1">Code: <span className="uppercase font-bold">{assignedCourse.subject.subject_code}</span></p>
+                                                <p className="opacity-60 text-xs xl:text-sm mt-1">Credit: <span className="font-bold">{assignedCourse.subject.credits}</span></p>
                                             </td>
 
                                             {/* Assigned Department Name */}
