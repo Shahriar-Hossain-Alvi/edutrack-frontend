@@ -8,6 +8,8 @@ import AllUser from "../../pages/admin/AllUser.jsx";
 import SingleUserDetails from "../../pages/private/SingleUserDetails.jsx";
 import Subjects from "../../pages/admin/Subjects.jsx";
 import AssignedCourses from "../../pages/admin/AssignedCourses.jsx";
+import InsertMarks from "../../pages/admin/Marks.jsx";
+import Marks from "../../pages/admin/Marks.jsx";
 
 
 const AdminRoutes = (
@@ -24,9 +26,8 @@ const AdminRoutes = (
         <Route path="addUser" element={<AddUser />} />
         <Route path="allUser" element={<AllUser />} />
         <Route path="user/:id" element={<SingleUserDetails />} />
-        {/* <Route index element={<AdminDashboard />} /> */}
+        <Route path="marks" element={<Marks />} />
         {/* <Route path="insertMarks" element={<AdminDashboard />} /> */}
-        {/* <Route path="results" element={<AdminDashboard />} /> */}
         <Route path="subjects" element={<Subjects />} />
         <Route path="assignedCourses" element={<AssignedCourses />} />
         <Route path="departmentsAndSemesters" element={<DepartmentsAndSemesters />} />

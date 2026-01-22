@@ -56,9 +56,9 @@ const AdminLayout = () => {
             </li>
 
             <li>
-                <NavLink to="/admin/insertMarks" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Insert marks">
+                <NavLink to="/admin/marks" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Insert marks">
                     <GrTableAdd className='w-4 h-4' />
-                    <p className="is-drawer-close:hidden">Insert marks</p>
+                    <p className="is-drawer-close:hidden">Insert and Edit Marks</p>
                 </NavLink>
             </li>
 

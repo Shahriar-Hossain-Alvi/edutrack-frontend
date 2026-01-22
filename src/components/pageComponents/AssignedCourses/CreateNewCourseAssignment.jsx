@@ -199,7 +199,7 @@ const CreateNewCourseAssignment = ({ allDepartments, isAllDepartmentsPending, al
                                     </div>
                                     <input
                                         type="text"
-                                        placeholder="Search title or code..."
+                                        placeholder="Search title, code or semester name..."
                                         className="input input-bordered join-item w-full"
                                         value={subjectSearch}
                                         onChange={(e) => {
