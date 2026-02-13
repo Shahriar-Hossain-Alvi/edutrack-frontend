@@ -136,7 +136,7 @@ const SingleUserDetails = () => {
 
 
                     {/* User Details Edit Button */}
-                    <div className="sm:tooltip" data-tip="Edit basic User Details">
+                    <div className="sm:tooltip sm:tooltip-left" data-tip="Edit basic User Details">
                         <button
                             onClick={() => {
                                 // @ts-ignore
@@ -243,8 +243,8 @@ const SingleUserDetails = () => {
 
 
             {/* Role Specific details */}
-            <div className="mt-10 w-11/12 my-5 bg-white p-4 mx-auto rounded-xl">
-                <div className="border-b border-base-300 flex items-center justify-between">
+            <div className="mt-10 w-11/12 bg-white p-4 mx-auto rounded-xl">
+                <div className="border-b border-base-300 flex items-center mb-5 justify-between">
                     <SectionHeader section_title={`${role} Details`} />
 
                     <div className="sm:tooltip sm:tooltip-left" data-tip={`Edit ${role} Details`}>
@@ -262,89 +262,98 @@ const SingleUserDetails = () => {
                 {/* Student Specific Data */}
                 {
                     student && (
-                        <div className="grid sm:grid-cols-3 max-w-4xl justify-between items-center md:text-lg mb-2 space-y-1 sm:space-y-0 gap-5">
+                        <div className="grid sm:grid-cols-3 justify-between items-center md:text-lg mb-4 space-y-4 sm:space-y-0 sm:gap-4">
                             {/* Registration Number */}
-                            <h2>
-                                <span className="font-bold mr-1 underline underline-offset-2">Registration Number:</span>
-                                {student?.registration}
-                            </h2>
+                            <div>
+                                <h4 className="text-gray-500">Registration Number</h4>
+                                <h4 className="font-semibold">{student?.registration}</h4>
+                            </div>
 
                             {/* Current Semester */}
-                            <h2 className="capitalize">
-                                <span className="font-bold mr-1 underline underline-offset-2">Current Semester:</span>
-                                {
+                            <div className="capitalize">
+                                <h4 className="text-gray-500">Current Semester</h4>
+                                <h4 className="font-semibold">{
                                     student?.semester?.semester_number
                                     ||
                                     <span className="text-error">N/A</span>
                                 }(
-                                {student?.semester?.semester_name
-                                    ||
-                                    <span className="text-error">N/A</span>
-                                })
-                            </h2>
+                                    {student?.semester?.semester_name
+                                        ||
+                                        <span className="text-error">N/A</span>
+                                    })</h4>
+                            </div>
 
                             {/* Session */}
-                            <h2>
-                                <span className="font-bold mr-1 underline underline-offset-2">Session:</span>
-                                {student?.session || <span className="text-error">N/A</span>}
-                            </h2>
+                            <div>
+                                <h4 className="text-gray-500">Session</h4>
+                                <h4 className="font-medium">{student?.session || <span className="text-error">N/A</span>}</h4>
+                            </div>
                         </div>
                     )
                 }
-                <div className="md:text-lg max-w-4xl">
-                    <div className="grid sm:grid-cols-3 justify-between items-center max-w-4xl mb-2 space-y-1 sm:space-y-0 gap-5">
+
+                <div className="md:text-lg">
+                    <div className="grid sm:grid-cols-3 justify-between items-center mb-4 space-y-4 sm:space-y-0 sm:gap-4">
                         {/* Date of Birth */}
-                        <h2 className="sm:col-span-2">
-                            <span className="font-bold mr-1 underline underline-offset-2">Date of Birth:</span>
-                            {(student && student.date_of_birth) && student?.date_of_birth?.split("T")[0]}
+                        <div>
+                            <h4 className="text-gray-500">Date of Birth</h4>
 
-                            {(student && student.date_of_birth === null) && <span className="text-error">N/A</span>}
+                            <h4 className="font-medium">
+                                {(student && student.date_of_birth) && student?.date_of_birth?.split("T")[0]}
 
-                            {(teacher && teacher.date_of_birth) && teacher?.date_of_birth?.split("T")[0]}
+                                {(student && student.date_of_birth === null) && <span className="text-error">N/A</span>}
 
-                            {(teacher && teacher.date_of_birth === null) && <span className="text-error">N/A</span>}
-                            <span className="text-sm italic ml-1">(YYYY-MM-DD)</span>
-                        </h2>
+                                {(teacher && teacher.date_of_birth) && teacher?.date_of_birth?.split("T")[0]}
+
+                                {(teacher && teacher.date_of_birth === null) && <span className="text-error">N/A</span>}
+                                <span className="text-sm italic ml-1">(YYYY-MM-DD)</span>
+                            </h4>
+                        </div>
+
+                        <div className="sm:col-span-2">
+                            {/* Department */}
+                            <h4 className="text-gray-500">Department</h4>
+                            <h4 className="font-medium">
+                                {
+                                    (student && student.department) && student?.department?.department_name.toUpperCase()
+                                }
+                                {
+                                    (teacher && teacher.department) && teacher.department.department_name.toUpperCase()
+                                }
+                                {
+                                    (student && student.department === null) && <span className="text-error">Not Assigned</span>
+                                }
+                                {
+                                    (teacher && teacher.department === null) && <span className="text-error">Not Assigned</span>
+                                }
+                            </h4>
+                        </div>
                     </div>
 
+                    <div className="mb-4">
+                        {/* Present Address */}
+                        <h4 className="text-gray-500">Present Address</h4>
+                        <h4>
+                            {(student && student.present_address) && student.present_address}
+                            {student && student.present_address === "" && <span className="text-error">N/A</span>}
 
-                    {/* Department */}
-                    <h2 className="">
-                        <span className="font-bold mr-1 underline underline-offset-2">Department:</span>
-                        {
-                            (student && student.department) && student?.department?.department_name.toUpperCase()
-                        }
-                        {
-                            (teacher && teacher.department) && teacher.department.department_name.toUpperCase()
-                        }
-                        {
-                            (student && student.department === null) && <span className="text-error">Not Assigned</span>
-                        }
-                        {
-                            (teacher && teacher.department === null) && <span className="text-error">Not Assigned</span>
-                        }
-                    </h2>
+                            {(teacher && teacher.present_address) && teacher.present_address}
+                            {teacher && teacher.present_address === "" && <span className="text-error">N/A</span>}
+                        </h4>
+                    </div>
 
+                    <div>
+                        {/* Permanent Address */}
+                        <h4 className="text-gray-500">Permanent Address</h4>
 
-                    {/* Permanent Address */}
-                    <h2 className="my-2">
-                        <span className="font-bold mr-1 underline underline-offset-2">Permanent Address:</span>
-                        {student && student.permanent_address}
-                        {student && student.permanent_address === "" && <span className="text-error">N/A</span>}
+                        <h4 className="font-medium">
+                            {student && student.permanent_address}
+                            {student && student.permanent_address === "" && <span className="text-error">N/A</span>}
 
-                        {teacher && teacher.permanent_address}
-                        {teacher && teacher.permanent_address === "" && <span className="text-error">N/A</span>}
-                    </h2>
-
-                    {/* Present Address */}
-                    <h2>
-                        <span className="font-bold mr-1 underline underline-offset-2">Present Address:</span>
-                        {(student && student.present_address) && student.present_address}
-                        {student && student.present_address === "" && <span className="text-error">N/A</span>}
-
-                        {(teacher && teacher.present_address) && teacher.present_address}
-                        {teacher && teacher.present_address === "" && <span className="text-error">N/A</span>}
-                    </h2>
+                            {teacher && teacher.permanent_address}
+                            {teacher && teacher.permanent_address === "" && <span className="text-error">N/A</span>}
+                        </h4>
+                    </div>
                 </div>
             </div>
 
