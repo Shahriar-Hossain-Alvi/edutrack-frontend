@@ -32,6 +32,12 @@ const AdminLayout = () => {
                 </label>
 
             </li>
+            <li>
+                <label htmlFor="my-drawer-4" aria-label="close sidebar" className="drawer-overlay">
+                    <GoSidebarExpand className='is-drawer-close:hidden w-4 h-4' />
+                    <p className='is-drawer-close:hidden transition duration-500 ease-in'>Close Sidebar</p>
+                </label>
+            </li>
 
             {/* Links */}
             <li>

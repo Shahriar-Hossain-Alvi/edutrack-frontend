@@ -63,10 +63,10 @@ const AllUser = () => {
                 {/* FIXME: remove the overflow-y-clip if it causes any issue scrolling issue for many rows */}
 
                 {/* 3. Filter UI Section */}
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mb-6 p-4 rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-7 gap-3 mb-6">
 
                     {/* Role Filter */}
-                    <div className='md:col-span-2'>
+                    <div className='md:col-span-1'>
                         <label className="label">Filter by Role: </label>
                         <select
                             name='user_role_filter'
@@ -86,11 +86,11 @@ const AllUser = () => {
                     </div>
 
                     {/* Order by */}
-                    <div className="md:col-span-2">
-                        <label className="label">Order By: </label>
+                    <div className="md:col-span-1">
+                        <label className="label block">Order By: </label>
                         <select
                             name='user_order_by_filter'
-                            className='select'
+                            className='select w-full'
                             value={filters.user_order_by_filter}
                             onChange={(e) => {
                                 handleFilterChange(e);
@@ -103,7 +103,7 @@ const AllUser = () => {
                     </div>
 
                     {/* Search Title/Code */}
-                    <div className="form-control md:col-span-6">
+                    <div className="form-control md:col-span-4">
                         <label className="label">Search by Department</label>
                         <input
                             type="text"
@@ -116,9 +116,9 @@ const AllUser = () => {
                     </div>
 
                     {/* Reset Button */}
-                    <div className="md:col-span-2 md:place-self-center md:mt-5">
+                    <div className="md:col-span-1  md:mt-6">
                         <button
-                            className="btn btn-error text-sm text-white"
+                            className="btn btn-error w-full text-sm text-white"
                             onClick={() => {
                                 setFilters({ user_role_filter: "", department_search: "", user_order_by_filter: "" })
                                 localStorage.removeItem("user_role_filter");
@@ -205,6 +205,7 @@ const AllUser = () => {
                         </div>
                 }
             </div>
+            {/* TODO: Pagination if possible */}
         </div>
     );
 };
