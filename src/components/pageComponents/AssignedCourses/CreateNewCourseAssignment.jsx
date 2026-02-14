@@ -244,9 +244,9 @@ const CreateNewCourseAssignment = ({ allDepartments, isAllDepartmentsPending, al
                         ) : null}
 
                         <div className="modal-action flex items-center justify-between">
-                            <p className="text-xs opacity-50">Fields are mandatory</p>
+                            <p className="text-xs text-error">All fields are mandatory</p>
                             <div className="flex gap-2">
-                                <button type="button" className="btn btn-ghost" onClick={() => {
+                                <button type="button" className="btn btn-ghost hover:btn-error hover:text-white" onClick={() => {
                                     reset();
                                     setTeacherSearch("");
                                     setSubjectSearch("");

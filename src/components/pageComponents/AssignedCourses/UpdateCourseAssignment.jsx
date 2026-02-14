@@ -147,12 +147,12 @@ const UpdateCourseAssignment = ({ assignedCourse, allDepartments, isAllDepartmen
         <div>
             <div>
                 {/* Create New Course Assignment Modal */}
-                <button className='btn btn-ghost hover:bg-transparent border-0 group/edit-courseAssignment' onClick={() => {
+                <button className='btn btn-ghost bg-transparent border-0 shadow-none btn-primary hover:bg-primary hover:text-white' onClick={() => {
                     setIsOpen(true);
                     // @ts-ignore
                     document.getElementById(modalId).showModal()
                 }}>
-                    <FaEdit className='text-sm group-hover/edit-courseAssignment:text-success' />
+                    <FaEdit className='text-sm' />
                 </button>
 
                 <dialog id={modalId} onClose={() => setIsOpen(false)} className="modal">
