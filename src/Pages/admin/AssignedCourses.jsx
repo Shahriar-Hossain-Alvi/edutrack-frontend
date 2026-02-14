@@ -12,9 +12,11 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import UpdateCourseAssignment from "../../components/pageComponents/AssignedCourses/UpdateCourseAssignment.jsx";
 import { AssignedCoursesSkeleton } from "../../components/ui/Skeletons.jsx";
 import { useDebounce } from "../../hooks/useDebounce.jsx";
+import useTheme from "../../hooks/useTheme.jsx";
 
 
 const AssignedCourses = () => {
+    const [theme] = useTheme();
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
     const [selectedSubjectOffering, setSelectedSubjectOffering] = useState(null); // state for editing
@@ -100,10 +102,10 @@ const AssignedCourses = () => {
     }
 
     return (
-        <div>
+        <div className="bg-base-100 rounded-lg p-4">
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1">
-                    <SectionHeader section_title='Assign Course' />
+                    <SectionHeader section_title='Course Assignments' />
                     <span>({allAssignedCourses?.length})</span>
                 </div>
 
@@ -118,11 +120,11 @@ const AssignedCourses = () => {
             {/* Show all assigned courses */}
             <div>
                 {/* 3. Filter UI Section */}
-                <div className="grid grid-cols-1 md:grid-cols-10 gap-4 mb-6 bg-base-200 p-4 rounded-lg">
+                <div className="grid grid-cols-1 md:grid-cols-10 gap-4 mb-6">
 
                     {/* Department Select */}
                     <div className="form-control md:col-span-3">
-                        <label className="label">Filter by Assigned Department</label>
+                        <label className="label">Assigned Department</label>
                         <select
                             name="department_id"
                             className="select w-full uppercase"
@@ -169,7 +171,7 @@ const AssignedCourses = () => {
                     {/* Reset Button */}
                     <div className="md:col-span-1 md:place-self-center md:mt-5">
                         <button
-                            className="btn btn-error text-sm"
+                            className={`btn btn-error text-sm ${theme == "light" ? "text-white" : "text-black"}`}
                             onClick={() => {
                                 setFilters({
                                     search: "",
@@ -192,14 +194,14 @@ const AssignedCourses = () => {
                     <div className="overflow-x-auto">
                         <table className="table table-xs md:table-sm xl:table-md">
                             <thead>
-                                <tr>
+                                <tr className="uppercase">
                                     <th>ID</th>
-                                    <th>Assigned <br /> Teacher</th>
-                                    <th>Assigned <br /> Subject</th>
-                                    <th>Assigned to <br /> (Department)</th>
+                                    <th>Teacher</th>
+                                    <th>Subject</th>
+                                    <th>Department</th>
                                     <th>Semester</th>
-                                    <th>Assigned Date</th>
-                                    <th>Updated On<br /> (Assignment)</th>
+                                    <th>Assigned</th>
+                                    <th>Updated</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -254,7 +256,7 @@ const AssignedCourses = () => {
                                                 {
                                                     user?.role === "super_admin" &&
                                                     <>
-                                                        <button className="btn btn-ghost hover:bg-transparent border-0 group/delete-course-assignment"
+                                                        <button className="btn btn-ghost bg-transparent border-0 shadow-none btn-error hover:bg-error hover:text-white"
                                                             onClick={() => {
                                                                 setSelectedSubjectOffering(assignedCourse);
                                                                 document.getElementById('delete_subject_offering_modal').
@@ -262,7 +264,7 @@ const AssignedCourses = () => {
                                                                     showModal()
                                                             }}
                                                         >
-                                                            <MdDelete className='group-hover/delete-course-assignment:text-red-700 text-lg' />
+                                                            <MdDelete className='text-lg' />
                                                         </button>
                                                     </>}
                                             </td>
@@ -273,14 +275,14 @@ const AssignedCourses = () => {
                             {
                                 allAssignedCourses?.length > 10 &&
                                 <tfoot>
-                                    <tr>
+                                    <tr className="uppercase">
                                         <th>ID</th>
-                                        <th>Assigned <br /> Teacher</th>
-                                        <th>Assigned <br /> Subject</th>
-                                        <th>Assigned to <br /> (Department)</th>
+                                        <th>Teacher</th>
+                                        <th>Subject</th>
+                                        <th>Department</th>
                                         <th>Semester</th>
-                                        <th>Assigned Date</th>
-                                        <th>Updated On<br /> (Assignment)</th>
+                                        <th>Assigned</th>
+                                        <th>Updated</th>
                                         <th>Actions</th>
                                     </tr>
                                 </tfoot>
