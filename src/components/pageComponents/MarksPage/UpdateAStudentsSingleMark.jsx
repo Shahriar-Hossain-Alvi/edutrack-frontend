@@ -36,35 +36,45 @@ const UpdateAStudentsSingleMark = ({ mark, allMarksWithFiltersRefetch }) => {
 
     // Update Mark Function
     const updateStudentsMark = async (data) => {
-        console.log(data);
-        //     const update_data = {
-        //         taught_by_id: null
-        //     };
+        const update_data = {};
 
-        //     if (Object.keys(update_data).length === 0) {
-        //         // @ts-ignore
-        //         document.getElementById(modalId).close();
-        //         return toast.error("No changes made. Change at least one field to update.");
-        //     }
+        if (data.updatedClassTestMark !== undefined && parseFloat(data.updatedClassTestMark) !== mark.class_test_mark) update_data.class_test_mark = parseFloat(data.updatedClassTestMark);
 
-        //     try {
-        //         setIsLoading(true);
-        //         const res = await axiosSecure.patch(`/subject_offering/${assignedCourse?.id}`, update_data);
-        //         toast.success(res?.data?.message || 'Course assignment updated successfully');
-        //         // @ts-ignore
-        //         document.getElementById(modalId).close();
-        //         reset();
-        //     } catch (error) {
-        //         console.log(error);
-        //         // @ts-ignore
-        //         document.getElementById(modalId).close();
-        //         const message = errorMessageParser(error);
-        //         toast.error(message || 'Failed to update mark');
-        //     } finally {
-        //         reset();
-        //         setIsLoading(false);
-        //         allMarksWithFiltersRefetch();
-        //     }
+        if (data.updatedAssignmentMark !== undefined && parseFloat(data.updatedAssignmentMark) !== mark.assignment_mark) update_data.assignment_mark = parseFloat(data.updatedAssignmentMark);
+
+        if (data.updatedMidtermMark !== undefined && parseFloat(data.updatedMidtermMark) !== mark.midterm_mark) update_data.midterm_mark = parseFloat(data.updatedMidtermMark);
+
+        if (data.updatedFinalExamMark !== undefined && parseFloat(data.updatedFinalExamMark) !== mark.final_exam_mark) update_data.final_exam_mark = parseFloat(data.updatedFinalExamMark);
+
+        if (data.updatedResultStatus && data.updatedResultStatus !== mark.result_status) update_data.result_status = data.updatedResultStatus;
+
+
+        // result_challenge_status, result_challenge_payment_status
+
+        if (Object.keys(update_data).length === 0) {
+            // @ts-ignore
+            document.getElementById(modalId).close();
+            return toast.error("No changes made. Change at least one field to update.");
+        }
+
+        try {
+            console.log(update_data);
+            setIsLoading(true);
+            const res = await axiosSecure.patch(`/marks/${mark?.id}`, update_data);
+            toast.success(res?.data?.message || 'Mark updated successfully');
+            console.log(res);
+            document.getElementById(modalId).close();
+            reset();
+        } catch (error) {
+            console.log(error);
+            document.getElementById(modalId).close();
+            const message = errorMessageParser(error);
+            toast.error(message || 'Failed to update mark');
+        } finally {
+            setIsOpen(false);
+            setIsLoading(false);
+            allMarksWithFiltersRefetch();
+        }
     };
 
     // console.log(mark);
@@ -75,7 +85,20 @@ const UpdateAStudentsSingleMark = ({ mark, allMarksWithFiltersRefetch }) => {
                 {/* Create New Course Assignment Modal */}
                 <button className='btn btn-ghost bg-transparent border-0 shadow-none btn-primary hover:bg-primary hover:text-white' onClick={() => {
                     setIsOpen(true);
-                    // @ts-ignore
+                    reset({
+                        // Autofill marks
+                        updatedAssignmentMark: mark?.assignment_mark,
+                        updatedClassTestMark: mark?.class_test_mark,
+                        updatedMidtermMark: mark?.midterm_mark,
+                        updatedFinalExamMark: mark?.final_exam_mark,
+
+                        // Autofill result status
+                        updatedResultStatus: mark?.result_status || "unpublished", // published or unpublished
+
+                        // Autofill result challenge status
+                        updatedResultChallengeStatus: mark?.result_challenge_status || "none", // challenged, resolved or none
+                        updatedResultChallengePaymentStatus: mark?.result_challenge_payment_status !== null ? mark?.result_challenge_payment_status.toString() : "false", // paid or not (true, false or null)
+                    });
                     document.getElementById(modalId).showModal()
                 }}>
                     <FaEdit className='text-sm' />
@@ -241,10 +264,7 @@ const UpdateAStudentsSingleMark = ({ mark, allMarksWithFiltersRefetch }) => {
                             <div className="modal-action flex items-center justify-end">
                                 <button type="button" className="btn btn-ghost" onClick={() => {
                                     setIsOpen(false);
-                                    // @ts-ignore
                                     document.getElementById(modalId).close();
-                                    reset();
-                                    allMarksWithFiltersRefetch();
                                 }}>Cancel</button>
                                 <button className="btn btn-primary min-w-[120px]" disabled={isLoading}>
                                     {isLoading ? <AiOutlineLoading3Quarters className="animate-spin" /> : "Update"}
