@@ -31,7 +31,7 @@ const UpdateAStudentsSingleMark = ({ mark, allMarksWithFiltersRefetch }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
-    console.log(mark);
+    // console.log(mark);
 
 
     // Update Mark Function
@@ -48,8 +48,12 @@ const UpdateAStudentsSingleMark = ({ mark, allMarksWithFiltersRefetch }) => {
 
         if (data.updatedResultStatus && data.updatedResultStatus !== mark.result_status) update_data.result_status = data.updatedResultStatus;
 
+        if (data.updatedResultChallengePaymentStatus === "true" && mark?.result_challenge_payment_status !== true) update_data.result_challenge_payment_status = true;
 
-        // result_challenge_status, result_challenge_payment_status
+        if (data.updatedResultChallengePaymentStatus === "false" && mark?.result_challenge_payment_status !== false) update_data.result_challenge_payment_status = false;
+
+        if (data.updatedResultChallengeStatus !== mark.result_challenge_status) update_data.result_challenge_status = data.updatedResultChallengeStatus;
+
 
         if (Object.keys(update_data).length === 0) {
             // @ts-ignore

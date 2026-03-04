@@ -106,6 +106,8 @@ const Marks = () => {
 
             {/* Show all marks */}
             <div>
+                {isAllMarksPending && <p className='text-center text-xl font-semibold text-error'>Loading...</p>}
+
                 {allMarksWithFilters?.length === 0 && <p className='text-center text-xl font-semibold text-error'>No marks found</p>}
                 {
                     allMarksWithFilters?.length > 0 &&
