@@ -7,12 +7,24 @@ import useAuth from '../../hooks/useAuth.jsx';
 import errorMessageParser from '../../utils/errorMessageParser/errorMessageParser.js';
 import toast from 'react-hot-toast';
 import useTheme from '../../hooks/useTheme.jsx';
+import { BsFiletypePdf } from 'react-icons/bs';
 
 const Results = () => {
     const [theme] = useTheme();
-    const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const [isFormLoading, setIsFormLoading] = useState(false);
+
+    const gpa_with_color = {
+        4.0: 'text-emerald-600',
+        3.75: 'text-green-600',
+        3.5: 'text-teal-600',
+        3.25: 'text-cyan-600',
+        3.0: 'text-sky-600',
+        2.75: 'text-blue-600',
+        2.5: 'text-yellow-600',
+        2.25: 'text-amber-600',
+        2.0: 'text-orange-600',
+        0.0: 'text-red-600',
+    }
 
     // Fetch departments
     const { data: allDepartments, isPending: isAllDepartmentsPending, error: allDepartmentsError, isError: isAllDepartmentsError, refetch: allDepartmentsRefetch } = useQuery({
@@ -92,6 +104,15 @@ const Results = () => {
         }
     }, [isSingleSearchedResultPending])
 
+    const downloadPdf = (base64String, fileName) => {
+        const linkSource = `data:application/pdf;base64,${base64String}`;
+        const downloadLink = document.createElement("a");
+        downloadLink.href = linkSource;
+        downloadLink.download = fileName;
+        downloadLink.click();
+    };
+
+    console.log(singleSearchedResult);
 
     return (
         <div className='bg-base-100 p-4 rounded-xl min-h-dvh'>
@@ -192,7 +213,7 @@ const Results = () => {
                                 <h2 className='uppercase text-lg font-semibold'>{singleSearchedResult?.department_info?.department_name}</h2>
                                 <h2 className='capitalize text-lg font-medium'>{singleSearchedResult?.semester_info?.semester_name} semester (Session: {singleSearchedResult?.student_info?.session})</h2>
 
-                                <h2 className='mt-10 text-lg underline'>Result Sheet</h2>
+                                <h2 className='mt-10 mb-5 font-medium text-xl underline'>Result Sheet</h2>
 
                                 <div className='border w-5/6 max-w-3xl text-left mx-auto rounded-lg p-1 space-y-1'>
                                     <h2 className='grid grid-cols-3'>
@@ -243,7 +264,7 @@ const Results = () => {
                                     </thead>
                                     <tbody className='text-center'>
                                         {singleSearchedResult?.result?.map((r, index) => (
-                                            <tr>
+                                            <tr key={r.id}>
                                                 <th>{index + 1}</th>
                                                 <td className='text-left'>{r?.subject?.subject_title}</td>
                                                 <td className='text-left'>{r?.subject?.subject_code}</td>
@@ -252,13 +273,16 @@ const Results = () => {
                                                 <td>{r?.class_test_mark}</td>
                                                 <td>{r?.midterm_mark}</td>
                                                 <td>{r?.final_exam_mark}</td>
-                                                <td>{r?.GPA}</td>
+                                                <td className={`${gpa_with_color[r?.GPA]}`}>{r?.GPA}</td>
                                             </tr>
                                         ))}
-
-
                                     </tbody>
                                 </table>
+                            </div>
+                            <div className='text-center mt-4'>
+                                <button
+                                    onClick={() => downloadPdf(singleSearchedResult?.pdf_base64, singleSearchedResult?.student_info?.name)}
+                                    className='btn btn-success btn-wide'>Download <BsFiletypePdf className='text-lg' /></button>
                             </div>
                         </div>
                     )}
