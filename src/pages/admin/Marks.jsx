@@ -142,24 +142,19 @@ const Marks = () => {
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.delete(`/marks/${id}`);
-            // @ts-ignore
-            document.getElementById('delete_a_mark_modal').close();
-            allMarksWithFiltersRefetch();
             toast.success(res?.data?.message);
         } catch (error) {
             console.log(error);
-            // @ts-ignore
-            document.getElementById('delete_a_mark_modal').close();
             const message = errorMessageParser(error);
             toast.error(message || 'Failed to delete marks for this student');
         } finally {
+            // @ts-ignore
+            document.getElementById('delete_a_mark_modal').close();
             setIsFormLoading(false);
             setSelectedMark(null);
-            allDepartmentsRefetch();
+            allMarksWithFiltersRefetch();
         }
     }
-
-    console.log(allMarksWithFilters);
 
     // publish result in bulk
     const publish_result_bulk = async (department_id, semester_id, session) => {
@@ -306,6 +301,7 @@ const Marks = () => {
 
                             <div className="collapse-content text-sm">
                                 <div className='text-end'>
+                                    <span className='mr-2'>Marks Inserted: {category?.marks?.length}</span>
                                     <button onClick={() => publish_result_bulk(category.department_id, category.semester_id, category.session)} className="btn btn-sm btn-success" disabled={isFormLoading}>Publish Result</button>
                                 </div>
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaEyeSlash } from 'react-icons/fa';
 import { FaEye, FaLock } from 'react-icons/fa6';
@@ -22,6 +22,12 @@ const Signin = () => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const { user, fetchUser, setLoading } = useAuth();
+
+    useEffect(() => {
+        if (user) {
+            navigate('/');
+        }
+    }, []);
 
     const signInUser = async (data) => {
 
