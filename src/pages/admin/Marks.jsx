@@ -4,7 +4,7 @@ import SectionHeader from '../../utils/SectionHeader/SectionHeader.jsx';
 import useAxiosSecure from '../../hooks/useAxiosSecure.jsx';
 import { useEffect, useState } from 'react';
 import errorMessageParser from '../../utils/errorMessageParser/errorMessageParser.js';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import useAuth from '../../hooks/useAuth.jsx';
 import { MdDelete } from 'react-icons/md';
 import useTheme from '../../hooks/useTheme.jsx';

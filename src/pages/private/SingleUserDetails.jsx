@@ -12,7 +12,7 @@ import defaultImage from "../../assets/blank-profile-picture.png";
 import { ImZoomIn } from "react-icons/im";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import axios from "axios";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import { FaCalendar } from "react-icons/fa6";
