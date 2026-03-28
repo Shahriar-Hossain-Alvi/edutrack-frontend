@@ -5,7 +5,7 @@ import CreateStudentTab from '../../components/pageComponents/AddUserPage/Create
 import CreateTeacherTab from '../../components/pageComponents/AddUserPage/CreateTeacherTab.jsx';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
-import toast from 'react-hot-toast';
+import { toast } from 'react-hot-toast';
 import errorMessageParser from '../../utils/errorMessageParser/errorMessageParser.js';
 import useAuth from '../../hooks/useAuth.jsx';
 import { PiStudentFill } from 'react-icons/pi';
