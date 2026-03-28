@@ -32,8 +32,6 @@ const StudentProfile = () => {
         enabled: !!user
     })
 
-    console.log(userProfileData);
-
 
     // skeleton
     if (isPending) {

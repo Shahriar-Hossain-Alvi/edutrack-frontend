@@ -49,7 +49,7 @@ const StudentLayout = () => {
             </li>
 
             <li>
-                <NavLink to="/admin/marks" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Insert & edit marks">
+                <NavLink to="/student/my-courses" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Insert & edit marks">
                     <FaBook className='w-4 h-4' />
                     <p className="is-drawer-close:hidden">Offered Subjects</p>
                 </NavLink>
@@ -63,7 +63,7 @@ const StudentLayout = () => {
             </li>
 
             <li>
-                <NavLink to="/admin/results" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Results">
+                <NavLink to="/student/results" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Results">
                     <LuFileSpreadsheet className='w-4 h-4' />
                     <p className="is-drawer-close:hidden">Results</p>
                 </NavLink>
