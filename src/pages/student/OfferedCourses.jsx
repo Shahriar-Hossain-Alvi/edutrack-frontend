@@ -34,7 +34,7 @@ const OfferedCourses = () => {
 
             <div>
                 {isPending && <LoadingSpinner />}
-                {offeredCourses.length === 0 && <h2 className="text-xl font-semibold">No Offered Courses found</h2>}
+                {offeredCourses?.length === 0 && <h2 className="text-xl font-semibold">No Offered Courses found</h2>}
                 {
                     !isPending && offeredCourses.length > 0 && offeredCourses?.map((offeredCourse, idx) => (
                         <div key={idx} className="mb-5">

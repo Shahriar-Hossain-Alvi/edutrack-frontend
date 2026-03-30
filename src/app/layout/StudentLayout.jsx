@@ -35,14 +35,7 @@ const StudentLayout = () => {
 
             {/* Links */}
             <li>
-                <NavLink end to="/student" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Dashboard">
-                    <MdDashboard className='w-4 h-4' />
-                    <p className="is-drawer-close:hidden">Dashboard</p>
-                </NavLink>
-            </li>
-
-            <li>
-                <NavLink to="/student/profile" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add User">
+                <NavLink end to="/student" className="is-drawer-close:tooltip is-drawer-close:tooltip-right" data-tip="Add User">
                     <RiUserAddFill className='w-4 h-4' />
                     <p className="is-drawer-close:hidden">Profile</p>
                 </NavLink>
