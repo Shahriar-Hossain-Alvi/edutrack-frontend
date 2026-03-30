@@ -31,6 +31,25 @@ const SingleStudentMarks = () => {
         }
     }, [isError])
 
+    // calculate challenge period
+    const calculateChallengePeriod = (date) => {
+        const today = new Date();
+        const result_creation_date = new Date(date);
+
+        // Check if the date is actually valid before calculating
+        if (isNaN(result_creation_date.getTime())) {
+            return 99;
+        }
+
+        // Difference in milliseconds
+        const diffInMs = today.getTime() - result_creation_date.getTime();
+
+        // Convert milliseconds to full days
+        const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24));
+        return diffInDays;
+    }
+
+    // challenge result
     const challengeResult = async () => {
 
         try {
@@ -50,7 +69,6 @@ const SingleStudentMarks = () => {
             refetch();
         }
     }
-
 
     return (
         <div>
@@ -105,12 +123,15 @@ const SingleStudentMarks = () => {
                                                     mark?.result_challenge_status === "none" &&
                                                     <td className='text-center'>
                                                         <span className='text-xs block'>Not Challenged</span>
-                                                        <button className="btn btn-xs btn-error mt-1" onClick={() => {
-                                                            document.getElementById('challenge_result_modal').
-                                                                // @ts-ignore
-                                                                showModal()
-                                                            setSelectedMarkForChallenge(mark)
-                                                        }}>Challenge?</button>
+                                                        {
+                                                            calculateChallengePeriod(mark?.created_at) <= 10 &&
+                                                            <button
+                                                                className={`btn btn-xs btn-error mt-1`} onClick={() => {
+                                                                    document.getElementById('challenge_result_modal').
+                                                                        // @ts-ignore
+                                                                        showModal()
+                                                                    setSelectedMarkForChallenge(mark)
+                                                                }}>Challenge?</button>}
                                                     </td>
 
                                                 }
@@ -121,11 +142,11 @@ const SingleStudentMarks = () => {
 
                                                         <span className='block my-1'>Challenged At: {mark?.challenged_at?.split("T")[0]}</span>
 
-                                                        <span className='block'>Payment Status: {mark?.result_challenge_payment_status || <span className='text-error'>Not paid</span>}</span>
+                                                        <span className='block'>Payment Status: {mark?.result_challenge_payment_status === true ? <span className='text-success'>Paid</span> : <span className='text-error'>Not paid</span>}</span>
 
-                                                        <span className='block my-1'>Payment Time: {mark?.challenge_payment_time || <span className='text-error'>Not paid</span>}</span>
+                                                        <span className='block my-1'>Payment Time: {mark?.challenge_payment_time?.split("T")[0] || <span className='text-error'>Not paid</span>}</span>
 
-                                                        <span className='block'>Resolved At: {mark?.challenge_resolved_at?.split["T"][0] || <span className='text-error'>Not Resolved</span>}</span>
+                                                        <span className='block'>Resolved At: {mark?.challenge_resolved_at?.split("T")[0] || <span className='text-error'>Not Resolved</span>}</span>
                                                     </td>
                                                 }
                                             </tr>
