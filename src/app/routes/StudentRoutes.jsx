@@ -17,8 +17,8 @@ const StudentRoutes = (
             </PrivateRoutes>
         }
     >
-        <Route index element={<StudentDashboard />} />
-        <Route path="profile" element={<StudentProfile />} />
+        {/* <Route  element={<StudentDashboard />} /> */}
+        <Route index element={<StudentProfile />} />
         <Route path="my-courses" element={<OfferedCourses />} />
         <Route path="marks" element={<SingleStudentMarks />} />
         <Route path="results" element={<Results />} />

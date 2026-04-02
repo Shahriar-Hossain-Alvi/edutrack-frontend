@@ -317,15 +317,12 @@ const Marks = () => {
                                                 <th>Name</th>
                                                 <th>Reg</th>
                                                 <th>Subject</th>
-                                                <th>CT</th>
-                                                <th>Assignment</th>
-                                                <th>Mid</th>
-                                                <th>Final</th>
+                                                <th>Marks <br /> (categorized)</th>
                                                 <th>Total</th>
                                                 <th>GPA</th>
-                                                <th>Entered</th>
                                                 <th className='text-center'>Status</th>
                                                 <th>Challenged</th>
+                                                <th>Entered</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -340,26 +337,23 @@ const Marks = () => {
 
                                                         <td>{mark?.subject?.subject_title}</td>
 
-                                                        {/* Class Test Mark */}
-                                                        <td className='text-center'>{mark?.class_test_mark === null ? <button className='text-error  opacity-50'>N/A</button> : mark?.class_test_mark}</td>
+                                                        {/* marks categorized */}
+                                                        <td>
+                                                            <span className='block'>CT: {mark?.class_test_mark === null ? <button className='text-error  opacity-50'>N/A</button> : mark?.class_test_mark}</span>
 
-                                                        {/* Assignment Mark */}
-                                                        <td className='text-center'>{mark?.assignment_mark === null ? <button className='text-error opacity-50'>N/A</button> : mark?.assignment_mark}</td>
+                                                            <span className='block my-1'>Assignment: {mark?.assignment_mark === null ? <button className='text-error opacity-50'>N/A</button> : mark?.assignment_mark}</span>
 
-                                                        {/* Midterm Mark */}
-                                                        <td className='text-center'>{mark?.midterm_mark === null ? <button className='text-error  opacity-50'>N/A</button> : mark?.midterm_mark}</td>
+                                                            <span className='block'>Mid: {mark?.midterm_mark === null ? <button className='text-error  opacity-50'>N/A</button> : mark?.midterm_mark}</span>
 
-                                                        {/* Final Mark */}
-                                                        <td className='text-center'>{mark?.final_exam_mark === null ? <button className='text-error  opacity-50'>N/A</button> : mark?.final_exam_mark}</td>
+                                                            <span className='block mt-1'>Final Exam: {mark?.final_exam_mark === null ? <button className='text-error  opacity-50'>N/A</button> : mark?.final_exam_mark}</span>
+                                                        </td>
+
 
                                                         {/* Total Mark */}
                                                         <td className='text-center'>{mark?.total_mark}</td>
 
                                                         {/* GPA */}
                                                         <td className={`text-center ${gpa_with_color[mark?.GPA]}`}>{mark?.GPA}</td>
-
-                                                        {/* created at */}
-                                                        <td>{mark?.created_at?.split("T")[0]}</td>
 
                                                         {/* result status */}
                                                         <td className='text-center'>
@@ -468,11 +462,15 @@ const Marks = () => {
                                                                         <div className="timeline-middle">
                                                                             <FaCheckCircle className={`text-${result_challenge_timeline_with_color[mark?.challenge_resolved_at && true || null]}`} />
                                                                         </div>
-                                                                        <div className="timeline-end timeline-box border-none">{mark?.challenge_resolved_at && mark?.challenge_resolved_at.split("T")[0] || "Not Paid"}</div>
+                                                                        <div className="timeline-end timeline-box border-none">{mark?.challenge_resolved_at && mark?.challenge_resolved_at.split("T")[0] || "Not Resolved"}</div>
                                                                     </li>
                                                                 </ul>
                                                             </div>
                                                         </td>
+
+                                                        {/* created at */}
+                                                        <td>{mark?.created_at?.split("T")[0]}</td>
+
                                                         {/* action */}
                                                         <td>
                                                             {/* update marks button */}
@@ -506,15 +504,12 @@ const Marks = () => {
                                                 <th>Name</th>
                                                 <th>Reg</th>
                                                 <th>Subject</th>
-                                                <th>CT</th>
-                                                <th>Assignment</th>
-                                                <th>Mid</th>
-                                                <th>Final</th>
+                                                <th>Marks<br /> (categorized)</th>
                                                 <th>Total</th>
                                                 <th>GPA</th>
-                                                <th>Entered</th>
                                                 <th className='text-center'>Status</th>
                                                 <th>Challenged</th>
+                                                <th>Entered</th>
                                                 <th>Action</th>
                                             </tr>
                                         </tfoot>

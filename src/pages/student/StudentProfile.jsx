@@ -13,6 +13,7 @@ import { toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
 import useTheme from "../../hooks/useTheme.jsx";
+import { IoIosNotifications } from "react-icons/io";
 
 
 const StudentProfile = () => {
@@ -88,6 +89,11 @@ const StudentProfile = () => {
 
     return (
         <div>
+            {/* notification */}
+            <div className="flex  justify-end my-2">
+                <IoIosNotifications className="text-xl" />
+            </div>
+
             <div className="bg-base-100 p-4 rounded-xl">
                 <div className="border-b border-base-300 flex justify-between items-center">
                     <SectionHeader section_title='Profile' />
