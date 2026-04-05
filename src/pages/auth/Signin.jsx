@@ -15,6 +15,10 @@ import { MdEmail } from 'react-icons/md';
 import useTheme from '../../hooks/useTheme.jsx';
 
 const Signin = () => {
+    const dummy_teacher_email = import.meta.env.VITE_DUMMY_TEACHER_EMAIL;
+    const dummy_student_email = import.meta.env.VITE_DUMMY_STUDENT_EMAIL;
+    const dummy_user_password = import.meta.env.VITE_DUMMY_USER_PASSWORD;
+
     const [theme] = useTheme();
     const [showPassword, setShowPassword] = useState(false);
     const [formLoading, setFormLoading] = useState(false);
@@ -36,8 +40,6 @@ const Signin = () => {
         const formData = new FormData();
         formData.append('username', data.email);
         formData.append('password', data.password);
-
-        // TODO: prevent login if user is already logged in
 
         try {
             setFormLoading(true);
@@ -69,6 +71,54 @@ const Signin = () => {
     }
 
 
+    // signin using dummy account
+    const handleDummySignIn = async (role) => {
+        if (user) {
+            toast.error("Already logged in!");
+            return setTimeout(() => {
+                navigate('/');
+            }, 2000)
+        };
+
+        // Backend expects username and password as formdata
+        const formData = new FormData();
+
+        if (role == "teacher") {
+            formData.append('username', dummy_teacher_email);
+            formData.append('password', dummy_user_password);
+        } else if (role == "student") {
+            formData.append('username', dummy_student_email);
+            formData.append('password', dummy_user_password);
+        }
+
+        try {
+            setFormLoading(true);
+            // 1: get token in httponly cookie from backend
+            const res = await axiosSecure.post('/auth/dummy_user_login', formData);
+
+            if (res?.data?.message === "Login successful") {
+                toast.success(res?.data?.message);
+                // 2: Fetch user info using the new cookie
+                const userData = await fetchUser();
+                console.log(userData);
+                // 3: Redirect based on the fetched data 
+                if (userData?.role === "admin" || userData?.role === "super_admin") {
+                    navigate('/admin');
+                } else if (userData?.role === "teacher") {
+                    navigate('/teacher');
+                } else if (userData?.role === "student") {
+                    navigate('/student')
+                }
+            }
+        } catch (error) {
+            console.error(error);
+            const message = errorMessageParser(error);
+            toast.error(message || "Failed to login. Please check your credentials.");
+            setLoading(false);
+        } finally {
+            setFormLoading(false);
+        }
+    }
 
 
     return (
@@ -137,6 +187,20 @@ const Signin = () => {
                             <a className="link link-hover link-info text-right text-sm">Forgot password?</a>
                             <button className={`btn mt-4 ${formLoading ? "btn-disabled" : "bg-primary hover:bg-primary-dark text-white"}`} type='submit'>Login</button>
                         </fieldset>
+
+                        <div className='flex justify-center gap-2'>
+                            <button
+                                disabled={formLoading}
+                                onClick={() => handleDummySignIn("teacher")}
+                                type='button'
+                                className="btn btn-accent">Signin Teacher</button>
+
+                            <button
+                                disabled={formLoading}
+                                onClick={() => handleDummySignIn("student")}
+                                type='button'
+                                className="btn btn-secondary">Signin Student</button>
+                        </div>
                     </form>
                 </div>
                 <p className='text-center my-5 text-xs'>&copy; {new Date().getFullYear()} EDUTRACK. All rights reserved.</p>

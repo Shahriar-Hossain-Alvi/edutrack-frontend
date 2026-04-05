@@ -28,9 +28,6 @@ const Navbar = () => {
             </div>
             <div className="flex-none">
                 <ul className="menu menu-horizontal px-1">
-                    <li><NavLink to="/notice" target='_blank'>Notice</NavLink></li>
-                    <li><NavLink to="/contact" target='_blank'>Contact</NavLink></li>
-                    <li><NavLink to="/faculties" target='_blank'>Faculties</NavLink></li>
                     {/* <li><ThemeSwitch changeTheme={toggleTheme} /></li> */}
                     <li className='my-auto hover:bg-transparent group/theme'>
                         <label className="swap swap-rotate">

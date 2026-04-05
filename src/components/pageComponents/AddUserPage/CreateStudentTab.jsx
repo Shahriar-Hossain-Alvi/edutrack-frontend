@@ -3,7 +3,7 @@ import SectionHeader from "../../../utils/SectionHeader/SectionHeader.jsx";
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../../hooks/useAxiosSecure.jsx";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 import axios from "axios";
 import CreateUserForm from "../../ui/CreateUserForm.jsx";
 import errorMessageParser from "../../../utils/errorMessageParser/errorMessageParser.js";
