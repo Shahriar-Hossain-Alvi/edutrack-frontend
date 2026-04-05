@@ -97,6 +97,26 @@ const AuthProvider = ({ children }) => {
     }, []);
 
 
+    // connect to the websocket
+    useEffect(() => {
+        if (user && user?.role === "student") {
+            const ws = new WebSocket(`${import.meta.env.VITE_API_BASE_URL}/notifications/ws/${user?.id}`);
+
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                console.log(data);
+                if (data.type === "RESULT_PUBLISHED") {
+                    toast.success(data.message);
+                } else if (data.type === "PAYMENT_STATUS_UPDATE") {
+                    toast.success(data.message);
+                } else if (data.type === "CHALLENGE_RESOLVED") {
+                    toast.success(data.message);
+                }
+            };
+            return () => ws.close();
+        }
+    }, [user]);
+
     // Initial Session Check on mount
     useEffect(() => {
         fetchUser();
