@@ -13,7 +13,6 @@ const MainLayoutWithAxiosInterceptor = () => {
             <Navbar />
             <Toaster />
             <Outlet />
-            {/* TODO: Footer here */}
         </div>
     )
 };

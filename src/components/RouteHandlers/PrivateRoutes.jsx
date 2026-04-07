@@ -19,7 +19,7 @@ const PrivateRoutes = ({ children, role }) => {
     // 3. Authorization check. 
     if (role && !allowedRoles.includes(user?.role)) {
         console.warn(`User role '${user.role}' denied access to required role '${role}'`);
-        return <Navigate to="/unauthorized" replace /> // TODO: add a unauthorized page
+        return <Navigate to="/unauthorized" replace />
     }
 
     return children;

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import SectionHeader from "../../utils/SectionHeader/SectionHeader.jsx";
 import useAxiosSecure from "../../hooks/useAxiosSecure.jsx";
 import useAuth from "../../hooks/useAuth.jsx";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { SingleUserDetailsSkeleton } from "../../components/ui/Skeletons.jsx";
 import errorMessageParser from "../../utils/errorMessageParser/errorMessageParser.js";
@@ -34,7 +34,7 @@ const StudentProfile = () => {
         enabled: !!user
     })
 
-    const { data: notification, isPending: isNotificationPending, isError: isNotificationError, error: notificationError, refetch: notificationRefetch } = useQuery({
+    const { data: notification, isError: isNotificationError, error: notificationError, refetch: notificationRefetch } = useQuery({
         queryKey: ['notification'],
         queryFn: async () => {
             const res = await axiosSecure(`/notifications/${user?.id}`);
@@ -42,6 +42,14 @@ const StudentProfile = () => {
         },
         enabled: !!user
     })
+
+    useEffect(() => {
+        if (isNotificationError) {
+            console.log(notificationError);
+            const message = errorMessageParser(notificationError);
+            toast.error(message || "Failed to fetch notifications");
+        }
+    }, [isNotificationError])
 
 
     // skeleton
