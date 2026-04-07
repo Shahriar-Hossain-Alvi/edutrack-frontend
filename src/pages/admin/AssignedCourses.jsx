@@ -22,6 +22,10 @@ const AssignedCourses = () => {
     const [selectedSubjectOffering, setSelectedSubjectOffering] = useState(null); // state for editing
     const [isFormLoading, setIsFormLoading] = useState(false);
 
+    // Pagination states
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
+
     // Filter
     const [filters, setFilters] = useState({
         search: "",
@@ -34,7 +38,7 @@ const AssignedCourses = () => {
 
     // Fetch all assigned courses
     const { data: allAssignedCourses, isPending: isAllAssignedCoursesPending, error: assignedCoursesError, isError: isAssignedCoursesError, refetch: allAssignedCoursesRefetch } = useQuery({
-        queryKey: ['allAssignedCourses', filters.course_assignment_order_by_filter, filters.department_id, debouncedSearch],
+        queryKey: ['allAssignedCourses', filters.course_assignment_order_by_filter, filters.department_id, debouncedSearch, page, size],
         queryFn: async () => {
             const params = new URLSearchParams();
 
@@ -44,10 +48,18 @@ const AssignedCourses = () => {
             // Use the debounced value for the API call
             if (debouncedSearch) params.append('search', debouncedSearch);
 
+            // send page and size to backend
+            params.append('page', page.toString());
+            params.append('size', size.toString());
+
             const res = await axiosSecure(`/subject_offering/?${params.toString()}`);
             return res.data;
         }
     })
+
+    // get the assigned courses from allAssignedCourses
+    const assignedCourses = allAssignedCourses?.items || [];
+    const totalPages = allAssignedCourses?.pages || 0;
 
     // Departments fetch for update and create
     const { data: allDepartments, isPending: isAllDepartmentsPending, error: allDepartmentsError, isError: isAllDepartmentsError, refetch: allDepartmentsRefetch } = useQuery({
@@ -78,6 +90,7 @@ const AssignedCourses = () => {
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({ ...prev, [name]: value }));
+        setPage(1);
     };
 
     // delete subject offering (course assignment)
@@ -106,7 +119,7 @@ const AssignedCourses = () => {
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1">
                     <SectionHeader section_title='Course Assignments' />
-                    <span>({allAssignedCourses?.length})</span>
+                    <span>({assignedCourses?.length})</span>
                 </div>
 
                 <CreateNewCourseAssignment
@@ -187,10 +200,10 @@ const AssignedCourses = () => {
                 </div>
                 {isAllAssignedCoursesPending && <AssignedCoursesSkeleton />}
 
-                {allAssignedCourses?.length === 0 && <div className="text-center py-4">No assigned courses found</div>}
+                {assignedCourses?.length === 0 && <div className="text-center py-4">No assigned courses found</div>}
 
                 {
-                    allAssignedCourses?.length > 0 &&
+                    assignedCourses?.length > 0 &&
                     <div className="overflow-x-auto">
                         <table className="table table-xs md:table-sm xl:table-md">
                             <thead>
@@ -207,7 +220,7 @@ const AssignedCourses = () => {
                             </thead>
                             <tbody>
                                 {
-                                    allAssignedCourses?.map(assignedCourse =>
+                                    assignedCourses?.map(assignedCourse =>
                                         <tr key={assignedCourse.id} className="text-sm md:text-base xl:text-lg">
                                             {/* ID */}
                                             <th>{assignedCourse.id}</th>
@@ -273,7 +286,7 @@ const AssignedCourses = () => {
                                 }
                             </tbody>
                             {
-                                allAssignedCourses?.length > 10 &&
+                                assignedCourses?.length > 10 &&
                                 <tfoot>
                                     <tr className="uppercase">
                                         <th>ID</th>
@@ -290,6 +303,42 @@ const AssignedCourses = () => {
                         </table>
                     </div>
                 }
+                {/* pagination buttons */}
+                <div>
+                    <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm">Show:</span>
+                            <select
+                                className="select select-bordered select-sm"
+                                value={size}
+                                onChange={(e) => { setSize(Number(e.target.value)); setPage(1); }}
+                            >
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                                <option value={50}>50</option>
+                            </select>
+                        </div>
+
+                        <div className="join">
+                            <button
+                                className="join-item btn btn-sm"
+                                disabled={page === 1}
+                                onClick={() => setPage(p => p - 1)}
+                            >« Prev</button>
+
+                            <button className="join-item btn btn-sm bg-base-300">
+                                Page {page} of {totalPages}
+                            </button>
+
+                            <button
+                                className="join-item btn btn-sm"
+                                disabled={page === totalPages}
+                                onClick={() => setPage(p => p + 1)}
+                            >Next »</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* Modals */}

@@ -95,7 +95,7 @@ const Marks = () => {
         enabled: !!user
     })
 
-    // get the user from the allUser
+    // get the marks from the allMarksWithFilters
     const allMarksData = allMarksWithFilters?.items || [];
     const totalPages = allMarksWithFilters?.pages || 0;
 
