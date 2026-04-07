@@ -22,6 +22,10 @@ const Subjects = () => {
     const [selectedSubject, setSelectedSubject] = useState(null); // state for editing
     const [isFormLoading, setIsFormLoading] = useState(false);
 
+    // Pagination states
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
+
     // Filter
     const [filters, setFilters] = useState({
         semester_id: "",
@@ -35,7 +39,7 @@ const Subjects = () => {
 
     // Subjects query
     const { data: allSubjects, isPending: isSubjectsPending, error: subjectsError, isError: isSubjectsError, refetch: allSubjectsRefetch } = useQuery({
-        queryKey: ['allSubjects', filters.semester_id, filters.subject_credits, filters.sub_order_by_filter, debouncedSearch],
+        queryKey: ['allSubjects', filters.semester_id, filters.subject_credits, filters.sub_order_by_filter, debouncedSearch, page, size],
         queryFn: async () => {
             const params = new URLSearchParams();
 
@@ -46,10 +50,18 @@ const Subjects = () => {
             // Use the debounced value for the API call
             if (debouncedSearch) params.append('search', debouncedSearch);
 
+            // send page and size to backend
+            params.append('page', page.toString());
+            params.append('size', size.toString());
+
             const res = await axiosSecure(`/subjects/?${params.toString()}`);
             return res.data;
         }
     })
+
+    // get the subjects from allSubjects
+    const subjects = allSubjects?.items || [];
+    const totalPages = allSubjects?.pages || 0;
 
     // SEMESTERS query to update subjects semester
     const { data: allSemesters, isPending: isSemesterPending, error: semesterError, isError: isSemesterError, refetch: totalSemestersRefetch } = useQuery({
@@ -80,6 +92,7 @@ const Subjects = () => {
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({ ...prev, [name]: value }));
+        setPage(1);
     };
 
     // open update subject modal
@@ -168,7 +181,7 @@ const Subjects = () => {
             <div className="flex justify-between items-center">
                 <div className="flex items-center gap-1">
                     <SectionHeader section_title='Subjects' />
-                    <span>({allSubjects?.length})</span>
+                    <span>({subjects?.length})</span>
                 </div>
 
                 <CreateSubject allSubjectsRefetch={allSubjectsRefetch} />
@@ -272,7 +285,7 @@ const Subjects = () => {
                     </thead>
                     <tbody>
                         {
-                            allSubjects?.length > 0 && allSubjects.map((subject) =>
+                            subjects?.length > 0 && subjects.map((subject) =>
                                 <tr key={subject.id}>
                                     <th>{subject.id}</th>
                                     <td className="capitalize">{subject.subject_title}</td>
@@ -313,6 +326,43 @@ const Subjects = () => {
                         }
                     </tbody>
                 </table>
+
+                {/* pagination buttons */}
+                <div>
+                    <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm">Show:</span>
+                            <select
+                                className="select select-bordered select-sm"
+                                value={size}
+                                onChange={(e) => { setSize(Number(e.target.value)); setPage(1); }}
+                            >
+                                <option value={5}>5</option>
+                                <option value={10}>10</option>
+                                <option value={20}>20</option>
+                                <option value={50}>50</option>
+                            </select>
+                        </div>
+
+                        <div className="join">
+                            <button
+                                className="join-item btn btn-sm"
+                                disabled={page === 1}
+                                onClick={() => setPage(p => p - 1)}
+                            >« Prev</button>
+
+                            <button className="join-item btn btn-sm bg-base-300">
+                                Page {page} of {totalPages}
+                            </button>
+
+                            <button
+                                className="join-item btn btn-sm"
+                                disabled={page === totalPages}
+                                onClick={() => setPage(p => p + 1)}
+                            >Next »</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             {/* MODALS */}

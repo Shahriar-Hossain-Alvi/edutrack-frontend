@@ -38,15 +38,13 @@ const AllUser = () => {
             if (debouncedSearch) params.append('department_search', debouncedSearch);
 
             // send page and size to backend
-            params.append('page', page);
-            params.append('size', size);
+            params.append('page', page.toString());
+            params.append('size', size.toString());
 
             const res = await axiosSecure(`/users/?${params.toString()}`);
             return res.data;
         }
     })
-
-    console.log(allUser);
 
     // get the user from the allUser
     const users = allUser?.items || [];
@@ -230,7 +228,8 @@ const AllUser = () => {
                         </table>
                     </div>
             }
-            {/* TODO: Pagination if possible */}
+
+            {/* pagination buttons */}
             <div>
                 <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
                     <div className="flex items-center gap-2">

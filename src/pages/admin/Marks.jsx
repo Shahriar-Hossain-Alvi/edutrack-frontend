@@ -23,6 +23,10 @@ const Marks = () => {
     const [isFormLoading, setIsFormLoading] = useState(false);
     const [activeIndexForAccordion, setActiveIndexForAccordion] = useState(0);
 
+    // Pagination states
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
+
 
     const result_status_with_color = {
         'published': `badge badge-sm ${theme === 'dark' && 'badge-soft'} badge-success`,
@@ -70,7 +74,7 @@ const Marks = () => {
 
     // Fetch All Marks
     const { data: allMarksWithFilters, isPending: isAllMarksPending, error: allMarksError, isError: isAllMarksError, refetch: allMarksWithFiltersRefetch } = useQuery({
-        queryKey: ['allMarksWithFilters', filters.department_id, filters.semester_id, filters.result_status, debouncedSearch],
+        queryKey: ['allMarksWithFilters', filters.department_id, filters.semester_id, filters.result_status, debouncedSearch, page, size],
         queryFn: async () => {
             const params = new URLSearchParams();
 
@@ -81,16 +85,26 @@ const Marks = () => {
             // Use the debounced value for the API call
             if (debouncedSearch) params.append('session', debouncedSearch);
 
+            // send page and size to backend
+            params.append('page', page.toString());
+            params.append('size', size.toString());
+
             const res = await axiosSecure(`/marks/get_all_marks_with_filters?${params.toString()}`);
             return res.data;
         },
         enabled: !!user
     })
 
+    // get the marks from the allMarksWithFilters
+    const allMarksData = allMarksWithFilters?.items || [];
+    const totalPages = allMarksWithFilters?.pages || 0;
+
+
     // Handler to update filters
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({ ...prev, [name]: value }));
+        setPage(1);
     };
 
     useEffect(() => {
@@ -287,8 +301,8 @@ const Marks = () => {
 
                 {allMarksWithFilters?.length === 0 && <p className='text-center text-xl font-semibold text-error'>No marks found</p>}
                 {
-                    allMarksWithFilters?.length > 0 &&
-                    allMarksWithFilters?.map((category, idx) =>
+                    allMarksData?.length > 0 &&
+                    allMarksData?.map((category, idx) =>
                         <div key={`${category.department_name}-${category.semester_name}-${category.session}`} className="collapse collapse-arrow bg-base-100 border border-base-300">
                             <input
                                 type="radio"
@@ -522,6 +536,43 @@ const Marks = () => {
                                             </tr>
                                         </tfoot>
                                     </table>
+                                </div>
+
+                                {/* pagination buttons */}
+                                <div>
+                                    <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
+                                        <div className="flex items-center gap-2">
+                                            <span className="text-sm">Show:</span>
+                                            <select
+                                                className="select select-bordered select-sm"
+                                                value={size}
+                                                onChange={(e) => { setSize(Number(e.target.value)); setPage(1); }}
+                                            >
+                                                <option value={5}>5</option>
+                                                <option value={10}>10</option>
+                                                <option value={20}>20</option>
+                                                <option value={50}>50</option>
+                                            </select>
+                                        </div>
+
+                                        <div className="join">
+                                            <button
+                                                className="join-item btn btn-sm"
+                                                disabled={page === 1}
+                                                onClick={() => setPage(p => p - 1)}
+                                            >« Prev</button>
+
+                                            <button className="join-item btn btn-sm bg-base-300">
+                                                Page {page} of {totalPages}
+                                            </button>
+
+                                            <button
+                                                className="join-item btn btn-sm"
+                                                disabled={page === totalPages}
+                                                onClick={() => setPage(p => p + 1)}
+                                            >Next »</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
