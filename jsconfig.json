@@ -1,11 +1,24 @@
+// {
+//   "compilerOptions": {
+//     "module": "nodenext",
+//     "target": "es2022",
+//     "baseUrl": "./src",
+//     "checkJs": true,
+//     "jsx": "react-jsx",
+//     "moduleResolution": "nodenext",
+//   },
+//   "include": ["src/**/*", "./*.d.ts"]
+// }
+
 {
   "compilerOptions": {
-    "module": "nodenext",
-    "target": "es2022",
-    "baseUrl": "./src",
-    "checkJs": true,
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
     "jsx": "react-jsx",
-    "moduleResolution": "nodenext",
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true
   },
-  "include": ["src/**/*", "./*.d.ts"]
+  "include": ["src/**/*"]
 }

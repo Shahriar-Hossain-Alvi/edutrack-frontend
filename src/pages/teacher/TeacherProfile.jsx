@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useAuth from '../../hooks/useAuth.jsx';
 import useTheme from '../../hooks/useTheme.jsx';
 import useAxiosSecure from '../../hooks/useAxiosSecure.jsx';
@@ -32,16 +32,6 @@ const TeacherProfile = () => {
         },
         enabled: !!user
     })
-
-    const { data: notification, isPending: isNotificationPending, isError: isNotificationError, error: notificationError, refetch: notificationRefetch } = useQuery({
-        queryKey: ['notification'],
-        queryFn: async () => {
-            const res = await axiosSecure(`/notifications/${user?.id}`);
-            return res.data;
-        },
-        enabled: !!user
-    })
-
 
     // skeleton
     if (isPending) {
@@ -98,63 +88,9 @@ const TeacherProfile = () => {
         }
     }
 
-    const show_indicator = notification?.some(n => n?.is_read === false);
-
-    // mark notification as read
-    const mark_notification_as_read = async (id) => {
-        const update_data = {
-            is_read: true
-        }
-        try {
-            setIsFormLoading(true);
-            const res = await axiosSecure.patch(`/notifications/${id}`, update_data);
-            if (res?.status === 200) {
-                toast.success("Notification marked as read");
-            }
-        } catch (error) {
-            console.log(error);
-            const message = errorMessageParser(error);
-            toast.error(message || 'Failed to mark notification as read');
-        } finally {
-            setIsFormLoading(false);
-            notificationRefetch();
-        }
-
-    }
-
 
     return (
         <div>
-            {/* notification */}
-            <div className=" flex justify-end my-2">
-                <div className="dropdown dropdown-left">
-                    <div tabIndex={0} role="button" className="btn border-0 hover:bg-transparent m-1">
-                        <div className="indicator">
-                            <span className={`indicator-item ${show_indicator && "status status-info animate-bounce"}`}></span>
-                            <div className="cursor-pointer">
-                                <IoIosNotifications className="text-xl" />
-                            </div>
-                        </div>
-                    </div>
-                    <div tabIndex={-1} className="dropdown-content bg-base-100 rounded-box z-1 p-2 min-w-64 shadow-sm">
-                        {notification?.map((n, index) => (
-                            <div key={n?.id} role="alert" className={`alert alert-info ${theme === "dark" && "alert-soft"} mb-2`}>
-                                <span>{n?.message}</span>
-
-                                {n?.is_read === false && (
-                                    <button
-                                        disabled={isFormLoading}
-                                        onClick={() => mark_notification_as_read(n?.id)}
-                                        data-tip="Dismiss"
-                                        className={`btn btn-info ${theme === "dark" && "btn-soft"} btn-sm hover:tooltip hover:tooltip-top ${theme === "dark" ? "border-info" : "border-gray-500"}`}><RiCheckDoubleLine className="text-lg" /></button>
-                                )}
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            </div>
-
-
             <div className="bg-base-100 p-4 rounded-xl">
                 <div className="border-b border-base-300 flex justify-between items-center">
                     <SectionHeader section_title='Profile' />

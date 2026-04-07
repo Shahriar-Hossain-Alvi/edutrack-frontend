@@ -12,6 +12,11 @@ import useTheme from '../../hooks/useTheme.jsx';
 const AllUser = () => {
     const [theme] = useTheme();
     const axiosSecure = useAxiosSecure();
+
+    // Pagination states
+    const [page, setPage] = useState(1);
+    const [size, setSize] = useState(10);
+
     const [filters, setFilters] = useState({
         user_role_filter: localStorage.getItem("user_role_filter") || "",
         department_search: "",
@@ -22,7 +27,7 @@ const AllUser = () => {
     const debouncedSearch = useDebounce(filters.department_search, 500);
 
     const { data: allUser, isError: isAllUserError, isPending: isAllUserPending, error: allUserError } = useQuery({
-        queryKey: ['allUser', filters.user_role_filter, filters.user_order_by_filter, debouncedSearch],
+        queryKey: ['allUser', filters.user_role_filter, filters.user_order_by_filter, debouncedSearch, page, size],
         queryFn: async () => {
             const params = new URLSearchParams();
 
@@ -32,10 +37,20 @@ const AllUser = () => {
             // Use the debounced value for the API call
             if (debouncedSearch) params.append('department_search', debouncedSearch);
 
+            // send page and size to backend
+            params.append('page', page);
+            params.append('size', size);
+
             const res = await axiosSecure(`/users/?${params.toString()}`);
             return res.data;
         }
     })
+
+    console.log(allUser);
+
+    // get the user from the allUser
+    const users = allUser?.items || [];
+    const totalPages = allUser?.pages || 0;
 
     useEffect(() => {
         if (isAllUserError) {
@@ -51,15 +66,15 @@ const AllUser = () => {
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
         setFilters(prev => ({ ...prev, [name]: value }));
+        setPage(1);
     };
 
     return (
         <div className='bg-base-100 p-4 rounded-xl'>
             <div className='flex items-center gap-1'>
                 <SectionHeader section_title='All User' />
-                <span className='font-bold text-xl'>({allUser?.length})</span>
+                <span className='font-bold text-xl'>({users?.length})</span>
             </div>
-            {/* FIXME: remove the overflow-y-clip if it causes any issue scrolling issue for many rows */}
 
             {/* 3. Filter UI Section */}
             <div className="grid grid-cols-1 md:grid-cols-7 gap-3 mb-6">
@@ -153,7 +168,7 @@ const AllUser = () => {
                             </thead>
                             <tbody>
                                 {
-                                    allUser?.length > 0 && allUser.map((user) =>
+                                    users?.length > 0 && users?.map((user) =>
                                         <tr className="hover:bg-base-300" key={user.id}>
                                             <td>{user.id}</td>
 
@@ -216,6 +231,41 @@ const AllUser = () => {
                     </div>
             }
             {/* TODO: Pagination if possible */}
+            <div>
+                <div className="flex flex-col md:flex-row justify-between items-center mt-6 gap-4">
+                    <div className="flex items-center gap-2">
+                        <span className="text-sm">Show:</span>
+                        <select
+                            className="select select-bordered select-sm"
+                            value={size}
+                            onChange={(e) => { setSize(Number(e.target.value)); setPage(1); }}
+                        >
+                            <option value={5}>5</option>
+                            <option value={10}>10</option>
+                            <option value={20}>20</option>
+                            <option value={50}>50</option>
+                        </select>
+                    </div>
+
+                    <div className="join">
+                        <button
+                            className="join-item btn btn-sm"
+                            disabled={page === 1}
+                            onClick={() => setPage(p => p - 1)}
+                        >« Prev</button>
+
+                        <button className="join-item btn btn-sm bg-base-300">
+                            Page {page} of {totalPages}
+                        </button>
+
+                        <button
+                            className="join-item btn btn-sm"
+                            disabled={page === totalPages}
+                            onClick={() => setPage(p => p + 1)}
+                        >Next »</button>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
