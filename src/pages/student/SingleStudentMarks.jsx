@@ -70,7 +70,6 @@ const SingleStudentMarks = () => {
 
     return (
         <div>
-            {/* TODO: Challenge Initiation: give options to initiate challenge under 7 days <br /> */}
             <SectionHeader section_title="Your Marks" />
 
             <div>
@@ -83,7 +82,7 @@ const SingleStudentMarks = () => {
                             {result.subject_name}
 
                             <div className="overflow-x-auto">
-                                <table className="table">
+                                <table className="table table-sm">
                                     {/* head */}
                                     <thead>
                                         <tr>
@@ -93,6 +92,7 @@ const SingleStudentMarks = () => {
                                             <th className='text-center'>Total</th>
                                             <th className='text-center'>GPA</th>
                                             <th className='text-center'>Challenge Status</th>
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
