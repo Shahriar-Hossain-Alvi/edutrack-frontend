@@ -1,4 +1,4 @@
-
+/// <reference types="vite/client" />
 // to resolve warning for .env when using import.meta.env
 interface ImportMetaEnv {
     VITE_CLOUDINARY_UPLOAD_PRESET: any;

@@ -184,7 +184,7 @@ const Signin = () => {
                                 }
                             </div>
 
-                            <a className="link link-hover link-info text-right text-sm">Forgot password?</a>
+                            {/* <a className="link link-hover link-info text-right text-sm">Forgot password?</a> */}
                             <button className={`btn mt-4 ${formLoading ? "btn-disabled" : "bg-primary hover:bg-primary-dark text-white"}`} type='submit'>Login</button>
                         </fieldset>
 
