@@ -21,8 +21,6 @@ const SingleStudentMarks = () => {
         enabled: !!user
     })
 
-    console.log(allResults);
-
     useEffect(() => {
         if (isError) {
             console.log(error);
@@ -72,9 +70,7 @@ const SingleStudentMarks = () => {
 
     return (
         <div>
-            Challenge Initiation: give options to initiate challenge under 7 days <br />
-
-            GPA/CGPA Calculation: Show GPA/CGPA after each semesters marks <br />
+            {/* TODO: Challenge Initiation: give options to initiate challenge under 7 days <br /> */}
             <SectionHeader section_title="Your Marks" />
 
             <div>
