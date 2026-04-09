@@ -31,7 +31,7 @@ const AuthProvider = ({ children }) => {
         const checkServer = async () => {
             try {
                 // If this succeeds immediately, server is already awake
-                await axios.get(`${import.meta.env.VITE_API_BASE_URL}/server/health-check`, { timeout: 3000 });
+                await axios.get(`${import.meta.env.VITE_API_BASE_URL}/server/health-check`, { timeout: 15000 });
                 setIsServerWaking(false);
             } catch (err) {
                 // If it fails or times out, the server is likely spinning up
