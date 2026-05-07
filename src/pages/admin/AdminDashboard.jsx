@@ -10,6 +10,8 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth.jsx';
 import { toast } from 'react-hot-toast';
 import errorMessageParser from '../../utils/errorMessageParser/errorMessageParser.js';
+import PieChart from '../../components/pageComponents/AdminDashboard/PieChart.jsx';
+
 
 const AdminDashboard = () => {
     const [theme] = useTheme();
@@ -26,6 +28,17 @@ const AdminDashboard = () => {
             return res?.data;
         }
     })
+
+    const { data: pieChartData, isPending: isPieChartData, isError: isPieChartDataError, error: pieChartDataError } = useQuery({
+        queryKey: ['pieChartData'],
+        queryFn: async () => {
+            const res = await axiosSecure('/adminDashboard/pieChart');
+            return res?.data;
+        }
+    })
+
+    console.log(pieChartData);
+
 
     const updateAdminPassword = async (data) => {
         const update_data = {
@@ -164,6 +177,34 @@ const AdminDashboard = () => {
                     )
                 }
             </div>
+
+
+            {/* Show Pie Charts */}
+            <div className='grid my-10 md:grid-cols-2 gap-2'>
+                <div className='mx-auto'>
+                    <h2 className='mb-4'>Number of Student per Department</h2>
+                    {
+                        pieChartData?.student_pie_chart_data.length === 0 ?
+                            <p>No data available</p> :
+                            <PieChart
+                                pieChartData={pieChartData?.student_pie_chart_data}
+                                title="Students"
+                            />
+                    }
+                </div>
+                <div className='mx-auto'>
+                    <h2 className='mb-4'>Number of Student per Department</h2>
+                    {
+                        pieChartData?.teacher_pie_chart_data.length === 0 ?
+                            <p>No data available</p> :
+                            <PieChart
+                                pieChartData={pieChartData?.teacher_pie_chart_data}
+                                title="Teachers"
+                            />
+                    }
+                </div>
+            </div>
+
 
             {/* Future features */}
             {/* 
