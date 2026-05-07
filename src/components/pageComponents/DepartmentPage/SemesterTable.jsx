@@ -38,12 +38,9 @@ const SemesterTable = ({ allSemesters, totalSemestersRefetch }) => {
 
         if (Object.keys(updated_data).length === 0) return toast.error('No data to update');
 
-        console.log(`Updating Id: ${selectedSemester.id} and updated data: `, updated_data);
-
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.patch(`/semesters/${updated_semester_id}`, updated_data);
-            console.log(res);
             // @ts-ignore
             document.getElementById('update_semester_modal').close();
             totalSemestersRefetch();
@@ -66,14 +63,12 @@ const SemesterTable = ({ allSemesters, totalSemestersRefetch }) => {
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.delete(`/semesters/${id}`);
-            console.log(res);
             // @ts-ignore
             document.getElementById('delete_semester_modal').close();
             totalSemestersRefetch();
             // @ts-ignore
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('delete_semester_modal').close();
             const message = errorMessageParser(error);

@@ -45,7 +45,6 @@ const StudentProfile = () => {
 
     useEffect(() => {
         if (isNotificationError) {
-            console.log(notificationError);
             const message = errorMessageParser(notificationError);
             toast.error(message || "Failed to fetch notifications");
         }
@@ -87,12 +86,10 @@ const StudentProfile = () => {
             setIsFormLoading(true);
             const res = await axiosSecure.patch(`/users/updatePassword/${user?.id}`, update_data);
             toast.success(res?.data?.message || 'Password updated');
-            console.log(res);
             // @ts-ignore
             document.getElementById("change_password_modal").close();
         }
         catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById("change_password_modal").close();
             const message = errorMessageParser(error);
@@ -118,7 +115,6 @@ const StudentProfile = () => {
                 toast.success("Notification marked as read");
             }
         } catch (error) {
-            console.log(error);
             const message = errorMessageParser(error);
             toast.error(message || 'Failed to mark notification as read');
         } finally {

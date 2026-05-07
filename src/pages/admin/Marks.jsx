@@ -108,7 +108,6 @@ const Marks = () => {
 
     useEffect(() => {
         if (isAllMarksError) {
-            console.log(allMarksError);
             const message = errorMessageParser(allMarksError);
             toast.error(message || "Failed to fetch all marks data");
         }
@@ -126,7 +125,6 @@ const Marks = () => {
 
     useEffect(() => {
         if (isAllDepartmentsError) {
-            console.log(allDepartmentsError);
             const message = errorMessageParser(allDepartmentsError);
             toast.error(message || "Failed to fetch departments");
         }
@@ -143,7 +141,6 @@ const Marks = () => {
 
     useEffect(() => {
         if (isSemesterError) {
-            console.log(semesterError);
             const message = errorMessageParser(semesterError);
             toast.error(message || "Failed to fetch semesters");
         }
@@ -159,7 +156,6 @@ const Marks = () => {
             allMarksWithFiltersRefetch();
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('delete_a_mark_modal').close();
             const message = errorMessageParser(error);
@@ -184,7 +180,6 @@ const Marks = () => {
             allMarksWithFiltersRefetch();
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             const message = errorMessageParser(error);
             toast.error(message || 'Failed to publish results');
         } finally {

@@ -52,7 +52,6 @@ const AllUser = () => {
 
     useEffect(() => {
         if (isAllUserError) {
-            console.log(allUserError);
             // @ts-ignore
             const message = errorMessageParser(error);
             toast.error(message || "Failed to fetch users. Please try again.");

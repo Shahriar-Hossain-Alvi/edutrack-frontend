@@ -27,8 +27,6 @@ const AdminDashboard = () => {
         }
     })
 
-    // console.log(dashboardCounts);
-
     const updateAdminPassword = async (data) => {
         const update_data = {
             username: user?.username
@@ -50,12 +48,10 @@ const AdminDashboard = () => {
             setIsFormLoading(true);
             const res = await axiosSecure.patch(`/users/updatePassword/${user?.id}`, update_data);
             toast.success(res?.data?.message || 'Password updated');
-            console.log(res);
             // @ts-ignore
             document.getElementById("change_password_modal").close();
         }
         catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById("change_password_modal").close();
             const message = errorMessageParser(error);

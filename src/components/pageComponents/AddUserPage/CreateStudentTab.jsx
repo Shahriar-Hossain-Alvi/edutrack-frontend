@@ -33,7 +33,6 @@ const CreateStudentTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
     // Only runs when the error state actually changes (prevent Cannot update a component (`Fe`) error and show error toast)
     useEffect(() => {
         if (isDepartmentsError) {
-            console.log(isDepartmentsError);
             const message = errorMessageParser(departmentsError);
             toast.error(message || "Failed to fetch departments");
         }
@@ -41,7 +40,6 @@ const CreateStudentTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
 
     useEffect(() => {
         if (isSemesterError) {
-            console.log(isSemesterError);
             const message = errorMessageParser(semesterError);
             toast.error(message || "Failed to fetch semesters");
         }
@@ -70,12 +68,10 @@ const CreateStudentTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
 
             try {
                 const cloudinaryRes = await axios.post(`https://api.cloudinary.com/v1_1/${cloudinary_cloud_name}/image/upload`, formData);
-                console.log(cloudinaryRes);
                 uploadedPhotoUrl = cloudinaryRes.data.secure_url;
                 public_id = cloudinaryRes.data.public_id;
                 toast.success('Image uploaded successfully');
             } catch (error) {
-                console.log(error);
                 setFormLoading(false);
                 return toast.error('Failed to upload image. Please try again.');
             }
@@ -121,11 +117,9 @@ const CreateStudentTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
         // send data to backend
         try {
             const res = await axiosSecure.post('/students/', create_student_payload);
-            console.log(res);
             toast.success(res?.data?.message || "Student created successfully");
             reset();
         } catch (error) {
-            console.log(error);
             const message = errorMessageParser(error);
             toast.error(message || "Failed to create student. Please try again.");
         } finally {

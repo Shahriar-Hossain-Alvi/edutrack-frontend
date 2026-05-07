@@ -82,7 +82,6 @@ const UpdateCourseAssignment = ({ assignedCourse, allDepartments, isAllDepartmen
 
     useEffect(() => {
         if (isAllTeachersForCourseAssignmentError) {
-            console.log(allTeachersForCourseAssignmentError);
             const message = errorMessageParser(allTeachersForCourseAssignmentError);
             toast.error(message || "Failed to fetch teachers data");
         }
@@ -91,7 +90,6 @@ const UpdateCourseAssignment = ({ assignedCourse, allDepartments, isAllDepartmen
 
     useEffect(() => {
         if (isAllSubjectsError) {
-            console.log(allSubjectsError);
             const message = errorMessageParser(allSubjectsError);
             toast.error(message || "Failed to fetch subjects data");
         }
@@ -128,7 +126,6 @@ const UpdateCourseAssignment = ({ assignedCourse, allDepartments, isAllDepartmen
             setTeacherSearch("");
             setSubjectSearch("");
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById(modalId).close();
             const message = errorMessageParser(error);
@@ -277,7 +274,7 @@ const UpdateCourseAssignment = ({ assignedCourse, allDepartments, isAllDepartmen
                                     // @ts-ignore
                                     document.getElementById(modalId).close();
                                 }}>Cancel</button>
-                                <button className="btn btn-primary min-w-[120px]" disabled={isLoading}>
+                                <button className="btn btn-primary min-w-30" disabled={isLoading}>
                                     {isLoading ? <AiOutlineLoading3Quarters className="animate-spin" /> : "Confirm Assignment"}
                                 </button>
 

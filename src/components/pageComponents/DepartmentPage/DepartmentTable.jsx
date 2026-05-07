@@ -30,18 +30,15 @@ const DepartmentTable = ({ allDepartments, allDepartmentsRefetch }) => {
         const updated_name = data.updatedDepartmentName;
         const updated_dept_id = selectedDept.id;
 
-        console.log("ID: ", updated_dept_id, "Changed Name: ", updated_name);
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.patch(`/departments/${updated_dept_id}`, { department_name: updated_name });
-            console.log(res);
             // @ts-ignore
             document.getElementById('update_dept_modal').close();
             allDepartmentsRefetch();
             // @ts-ignore
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('update_dept_modal').close();
             const message = errorMessageParser(error);
@@ -58,14 +55,12 @@ const DepartmentTable = ({ allDepartments, allDepartmentsRefetch }) => {
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.delete(`/departments/${id}`);
-            console.log(res);
             // @ts-ignore
             document.getElementById('delete_dept_modal').close();
             allDepartmentsRefetch();
             // @ts-ignore
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('delete_dept_modal').close();
             const message = errorMessageParser(error);

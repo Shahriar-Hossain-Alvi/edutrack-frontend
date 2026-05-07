@@ -50,7 +50,6 @@ const Signin = () => {
                 toast.success(res?.data?.message);
                 // 2: Fetch user info using the new cookie
                 const userData = await fetchUser();
-                console.log(userData);
                 // 3: Redirect based on the fetched data 
                 if (userData?.role === "admin" || userData?.role === "super_admin") {
                     navigate('/admin');
@@ -99,7 +98,6 @@ const Signin = () => {
                 toast.success(res?.data?.message);
                 // 2: Fetch user info using the new cookie
                 const userData = await fetchUser();
-                console.log(userData);
                 // 3: Redirect based on the fetched data 
                 if (userData?.role === "admin" || userData?.role === "super_admin") {
                     navigate('/admin');

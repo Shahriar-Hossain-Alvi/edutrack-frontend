@@ -41,7 +41,6 @@ const UpdateUserAuthDetailsByAdminModal = ({ singleUserDetails, singleUserDetail
         // updated Mobile Number  
         const updated_mobile_number = data.updatedMobileNumber === "" ? null : data.updatedMobileNumber;
         if (updated_mobile_number !== mobile_number) {
-            console.log(updated_mobile_number);
             if (updated_mobile_number?.startsWith("+88")) {
                 // @ts-ignore
                 document.getElementById('update_user_details_modal').close();
@@ -64,14 +63,12 @@ const UpdateUserAuthDetailsByAdminModal = ({ singleUserDetails, singleUserDetail
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.patch(`/users/${user_id}`, updatedUserData);
-            console.log(res);
             // @ts-ignore
             document.getElementById('update_user_details_modal').close();
             singleUserDetailsRefetch();
             // @ts-ignore
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('update_user_details_modal').close();
             const message = errorMessageParser(error);

@@ -13,18 +13,16 @@ const CreateDepartment = ({ allDepartmentsRefetch }) => {
 
     // ADD NEW DEPARTMENT Function
     const addNewDepartment = async (data) => {
-        console.log(data);
+
         try {
             setIsLoading(true);
             const res = await axiosSecure.post('/departments/', { department_name: data.departmentName });
-            console.log(res);
             allDepartmentsRefetch();
             // @ts-ignore
             document.getElementById('create_dept_modal').close();
             // @ts-ignore
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('create_dept_modal').close();
             const message = errorMessageParser(error);

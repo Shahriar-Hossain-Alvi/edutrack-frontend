@@ -44,7 +44,6 @@ const TeacherProfile = () => {
         return <h2 className="text-error text-2xl text-center">{message || 'User Details not found'}</h2>;
     }
 
-    console.log(userProfileData);
 
     // user image
     const userImage = userProfileData?.user_data?.photo_url || defaultImage;
@@ -70,12 +69,10 @@ const TeacherProfile = () => {
             setIsFormLoading(true);
             const res = await axiosSecure.patch(`/users/updatePassword/${user?.id}`, update_data);
             toast.success(res?.data?.message || 'Password updated');
-            console.log(res);
             // @ts-ignore
             document.getElementById("change_password_modal").close();
         }
         catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById("change_password_modal").close();
             const message = errorMessageParser(error);

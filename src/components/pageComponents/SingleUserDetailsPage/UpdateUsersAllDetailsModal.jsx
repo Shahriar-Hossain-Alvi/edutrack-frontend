@@ -14,7 +14,6 @@ const UpdateUsersAllDetailsModal = ({ singleUserDetails, singleUserDetailsRefetc
     // destructure singleUserDetails
     const { role, student, teacher } = singleUserDetails;
 
-    console.log(singleUserDetails);
 
     // DEPARTMENTS query
     const { data: allDepartments, isPending, error, isError, refetch: allDepartmentsRefetch } = useQuery({
@@ -37,7 +36,6 @@ const UpdateUsersAllDetailsModal = ({ singleUserDetails, singleUserDetailsRefetc
     // Only runs when the error state actually changes (prevent Cannot update a component (`Fe`) error and show error toast)
     useEffect(() => {
         if (isError) {
-            console.log(error);
             const message = errorMessageParser(error);
             toast.error(message || 'Failed to fetch departments');
         }
@@ -45,7 +43,6 @@ const UpdateUsersAllDetailsModal = ({ singleUserDetails, singleUserDetailsRefetc
 
     useEffect(() => {
         if (isSemesterError) {
-            console.log(semesterError);
             const message = errorMessageParser(semesterError);
             toast.error(message || 'Failed to fetch semesters');
         }
@@ -131,7 +128,6 @@ const UpdateUsersAllDetailsModal = ({ singleUserDetails, singleUserDetailsRefetc
         const currentPermanentAddress = (student && student.permanent_address) || (teacher && teacher.permanent_address) || "";
         if (data.updatedPermanentAddress !== currentPermanentAddress) updatedData.permanent_address = data.updatedPermanentAddress;
 
-        console.log(updatedData);
         // check if updated data is empty, if not, update user details
         if (Object.keys(updatedData).length === 0) {
             // @ts-ignore
@@ -142,21 +138,18 @@ const UpdateUsersAllDetailsModal = ({ singleUserDetails, singleUserDetailsRefetc
 
         // send data to backend
         try {
-            console.log(updatedData);
             let requestUrl = "";
             setFormLoading(true);
             if (role === 'student') requestUrl = '/students';
             if (role === 'teacher') requestUrl = '/teachers';
 
             const res = await axiosSecure.patch(`${requestUrl}/updateByAdmin/${user_specific_table_id}`, updatedData);
-            console.log(res);
             // @ts-ignore
             document.getElementById('update_users_other_details_modal').close();
             toast.success(res?.data?.message || `${role.toUpperCase()} details updated successfully`);
             reset();
             singleUserDetailsRefetch();
         } catch (error) {
-            console.log(error);
             const message = errorMessageParser(error);
             // @ts-ignore
             document.getElementById('update_users_other_details_modal').close();

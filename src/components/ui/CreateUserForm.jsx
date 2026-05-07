@@ -19,7 +19,7 @@ const CreateUserForm = ({
     return (
         <form
             className="flex flex-col md:flex-row justify-center items-center mt-5 mx-auto"
-            onSubmit={handleSubmit(submitAction || ((data) => console.log(data)))}
+            onSubmit={handleSubmit(submitAction)}
         >
             {/* User Table Fieldset */}
             <fieldset className="fieldset text-left border-base-300 shadow-2xl rounded-box  border p-1 sm:p-4">

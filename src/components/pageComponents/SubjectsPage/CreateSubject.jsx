@@ -24,7 +24,6 @@ const CreateSubject = ({ allSubjectsRefetch }) => {
     // semester error toast
     useEffect(() => {
         if (isSemesterError) {
-            console.log(semesterError);
             const message = errorMessageParser(semesterError);
             toast.error(message || "Failed to fetch semesters");
         }
@@ -44,14 +43,12 @@ const CreateSubject = ({ allSubjectsRefetch }) => {
         try {
             setIsLoading(true);
             const res = await axiosSecure.post('/subjects/', subject_data);
-            console.log(res);
             allSubjectsRefetch();
             // @ts-ignore
             document.getElementById('create_subject_modal').close();
             // @ts-ignore
             toast.success(res?.data?.message || 'New subject added successfully');
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('create_subject_modal').close();
             const message = errorMessageParser(error);

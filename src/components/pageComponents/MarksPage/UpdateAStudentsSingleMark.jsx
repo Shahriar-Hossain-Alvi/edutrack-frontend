@@ -68,15 +68,12 @@ const UpdateAStudentsSingleMark = ({ mark, allMarksWithFiltersRefetch }) => {
         }
 
         try {
-            console.log(update_data);
             setIsLoading(true);
             const res = await axiosSecure.patch(`/marks/${mark?.id}`, update_data);
             toast.success(res?.data?.message || 'Mark updated successfully');
-            console.log(res);
             document.getElementById(modalId).close();
             reset();
         } catch (error) {
-            console.log(error);
             document.getElementById(modalId).close();
             const message = errorMessageParser(error);
             toast.error(message || 'Failed to update mark');
