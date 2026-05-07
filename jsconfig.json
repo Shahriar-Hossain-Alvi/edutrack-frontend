@@ -1,16 +1,17 @@
-{
-  "compilerOptions": {
-    "module": "ESNext",
-    "target": "ESNext",
-    "moduleResolution": "Bundler",
-    "jsx": "react-jsx",
-    "allowJs": true,
-    "checkJs": true, 
-    "noEmit": true,
-    "ignoreDeprecations": "5.0"
-  },
-  "include": ["src/**/*", "**/*.d.ts"]
-}
+// This suppresses warnings in windows
+// {
+//   "compilerOptions": {
+//     "module": "ESNext",
+//     "target": "ESNext",
+//     "moduleResolution": "Bundler",
+//     "jsx": "react-jsx",
+//     "allowJs": true,
+//     "checkJs": true, 
+//     "noEmit": true,
+//     "ignoreDeprecations": "5.0"
+//   },
+//   "include": ["src/**/*", "**/*.d.ts"]
+// }
 
 
 // {
@@ -25,15 +26,16 @@
 //   "include": ["src/**/*", "./*.d.ts"]
 // }
 
-// {
-//   "compilerOptions": {
-//     "module": "ESNext",
-//     "target": "ESNext",
-//     "moduleResolution": "Bundler",
-//     "jsx": "react-jsx",
-//     "allowJs": true,
-//     "checkJs": false,
-//     "noEmit": true
-//   },
-//   "include": ["src/**/*"]
-// }
+// This suppresses warnings in linux
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "target": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "checkJs": false,
+    "noEmit": true
+  },
+  "include": ["src/**/*"]
+}
