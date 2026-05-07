@@ -31,13 +31,10 @@ const CreateTeacherTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
         setFormLoading(true);
         let uploadedPhotoUrl = '';
         let public_id = '';
-        console.log(data);
 
         // if profile picture is uploaded
         if (data.profile_picture && data.profile_picture.length > 0) {
             const picture = data.profile_picture[0];
-            console.log(picture);
-            console.log(typeof picture);
             // Image type check
             const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
             if (!allowedTypes.includes(picture.type)) {
@@ -51,12 +48,10 @@ const CreateTeacherTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
 
             try {
                 const cloudinaryRes = await axios.post(`https://api.cloudinary.com/v1_1/${cloudinary_cloud_name}/image/upload`, formData);
-                console.log(cloudinaryRes);
                 uploadedPhotoUrl = cloudinaryRes.data.secure_url;
                 public_id = cloudinaryRes.data.public_id;
                 toast.success('Image uploaded successfully');
             } catch (error) {
-                console.log(error);
                 setFormLoading(false);
                 return toast.error('Failed to upload image. Please try again.');
             }
@@ -95,15 +90,12 @@ const CreateTeacherTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
                 password: data.password || "123456"
             }
         }
-        console.log(create_teacher_payload);
         // // send data to backend
         try {
             const res = await axiosSecure.post('/teachers/', create_teacher_payload);
-            console.log(res);
             toast.success(res?.data?.message || "Teacher created successfully");
             reset();
         } catch (error) {
-            console.log(error);
             const message = errorMessageParser(error);
             toast.error(message || "Failed to create teacher. Please try again.");
 

@@ -79,12 +79,10 @@ const SingleUserDetails = () => {
 
             try {
                 const cloudinaryRes = await axios.post(`https://api.cloudinary.com/v1_1/${cloudinary_cloud_name}/image/upload`, formData);
-                console.log(cloudinaryRes);
                 uploadedPhotoUrl = cloudinaryRes.data.secure_url;
                 public_id = cloudinaryRes.data.public_id;
                 toast.success('Image uploaded successfully');
             } catch (error) {
-                console.log(error);
                 setFormLoading(false);
                 return toast.error('Failed to upload image. Please try again.');
             }
@@ -108,14 +106,12 @@ const SingleUserDetails = () => {
             if (teacher && role === 'teacher') requestUrl = `/teachers/updateByAdmin/${teacher.id}`;
 
             const res = await axiosSecure.patch(`${requestUrl}`, user_photo_update_data);
-            console.log(res);
             toast.success(res?.data?.message || "Profile picture updated");
             reset();
             singleUserDetailsRefetch();
             // @ts-ignore
             document.getElementById("update_profile_picture_modal").close();
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById("update_profile_picture_modal").close();
             const message = errorMessageParser(error);

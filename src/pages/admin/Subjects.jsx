@@ -74,7 +74,6 @@ const Subjects = () => {
 
     useEffect(() => {
         if (isSubjectsError) {
-            console.log(subjectsError);
             const message = errorMessageParser(subjectsError);
             toast.error(message || "Failed to fetch subjects");
         }
@@ -82,7 +81,6 @@ const Subjects = () => {
 
     useEffect(() => {
         if (isSemesterError) {
-            console.log(semesterError);
             const message = errorMessageParser(semesterError);
             toast.error(message || "Failed to fetch semesters");
         }
@@ -129,12 +127,10 @@ const Subjects = () => {
             return toast.error('No data to update')
         };
 
-        console.log(updated_data);
         const subject_id = selectedSubject.id;
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.patch(`/subjects/${subject_id}`, updated_data);
-            console.log(res);
             // @ts-ignore
             document.getElementById('update_subject_modal').close();
             allSubjectsRefetch();
@@ -142,7 +138,6 @@ const Subjects = () => {
             // @ts-ignore
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('update_subject_modal').close();
             const message = errorMessageParser(error);
@@ -159,14 +154,12 @@ const Subjects = () => {
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.delete(`/subjects/${id}`);
-            console.log(res);
             // @ts-ignore
             document.getElementById('delete_subject_modal').close();
             allSubjectsRefetch();
             // @ts-ignore
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('delete_subject_modal').close();
             const message = errorMessageParser(error);

@@ -21,7 +21,6 @@ const OfferedCourses = () => {
 
     useEffect(() => {
         if (isError) {
-            console.log(error);
             const message = errorMessageParser(error);
             toast.error(message || "Failed to fetch offered courses");
         }

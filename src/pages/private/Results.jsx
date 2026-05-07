@@ -36,7 +36,6 @@ const Results = () => {
 
     useEffect(() => {
         if (isAllDepartmentsError) {
-            console.log(allDepartmentsError);
             const message = errorMessageParser(allDepartmentsError);
             toast.error(message || "Failed to fetch departments");
         }
@@ -53,7 +52,6 @@ const Results = () => {
 
     useEffect(() => {
         if (isSemesterError) {
-            console.log(semesterError);
             const message = errorMessageParser(semesterError);
             toast.error(message || "Failed to fetch semesters");
         }
@@ -89,8 +87,6 @@ const Results = () => {
         enabled: !!filters.department_id && !!filters.semester_id && debouncedSearch.length > 2
     })
 
-    console.log(singleSearchedResult);
-
     // Handler to update filters
     const handleFilterChange = (e) => {
         const { name, value } = e.target;
@@ -99,7 +95,6 @@ const Results = () => {
 
     useEffect(() => {
         if (isSingleSearchedResultError) {
-            console.log(singleSearchedResultError);
             const message = errorMessageParser(singleSearchedResultError);
             toast.error(message || "Failed to fetch result");
         }

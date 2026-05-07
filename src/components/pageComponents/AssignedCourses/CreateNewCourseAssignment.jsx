@@ -47,7 +47,6 @@ const CreateNewCourseAssignment = ({ allDepartments, isAllDepartmentsPending, al
 
     useEffect(() => {
         if (isAllTeachersForCourseAssignmentError) {
-            console.log(allTeachersForCourseAssignmentError);
             const message = errorMessageParser(allTeachersForCourseAssignmentError);
             toast.error(message || "Failed to fetch teachers data");
         }
@@ -63,7 +62,6 @@ const CreateNewCourseAssignment = ({ allDepartments, isAllDepartmentsPending, al
             const params = new URLSearchParams();
             if (debouncedSubjectSearch) params.append('search', debouncedSubjectSearch)
             const res = await axiosSecure(`/subjects/?${params.toString()}`);
-            console.log(res);
             return res.data;
         },
         enabled: debouncedSubjectSearch?.length > 1
@@ -74,7 +72,6 @@ const CreateNewCourseAssignment = ({ allDepartments, isAllDepartmentsPending, al
 
     useEffect(() => {
         if (isAllSubjectsError) {
-            console.log(allSubjectsError);
             const message = errorMessageParser(allSubjectsError);
             toast.error(message || "Failed to fetch subjects data");
         }
@@ -98,7 +95,6 @@ const CreateNewCourseAssignment = ({ allDepartments, isAllDepartmentsPending, al
             setTeacherSearch("");
             setSubjectSearch("");
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('create_subject_offering_modal').close();
             const message = errorMessageParser(error);

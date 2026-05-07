@@ -49,7 +49,6 @@ const InsertMarks = ({ allMarksWithFiltersRefetch, allDepartmentsRefetch, totalS
 
     useEffect(() => {
         if (isAllStudentsForMarksError) {
-            console.log(allStudentsForMarksError);
             const message = errorMessageParser(allStudentsForMarksError);
             toast.error(message || "Failed to fetch students data for marking");
         }
@@ -78,7 +77,6 @@ const InsertMarks = ({ allMarksWithFiltersRefetch, allDepartmentsRefetch, totalS
 
     useEffect(() => {
         if (isSubjectsForMarkingError) {
-            console.log(subjectsForMarkingError);
             const message = errorMessageParser(subjectsForMarkingError);
             toast.error(message || "Failed to fetch subjects data");
         }
@@ -119,7 +117,6 @@ const InsertMarks = ({ allMarksWithFiltersRefetch, allDepartmentsRefetch, totalS
             document.getElementById('insert_marks_modal').close();
             reset();
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('insert_marks_modal').close();
             const message = errorMessageParser(error);

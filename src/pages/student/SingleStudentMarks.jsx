@@ -23,7 +23,6 @@ const SingleStudentMarks = () => {
 
     useEffect(() => {
         if (isError) {
-            console.log(error);
             const message = errorMessageParser(error);
             toast.error(message || "Failed to fetch all results");
         }
@@ -57,7 +56,6 @@ const SingleStudentMarks = () => {
             // @ts-ignore
             document.getElementById('challenge_result_modal').close();
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('challenge_result_modal').close();
             const message = errorMessageParser(error);

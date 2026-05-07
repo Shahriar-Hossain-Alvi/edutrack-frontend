@@ -72,7 +72,6 @@ const AssignedCourses = () => {
 
     useEffect(() => {
         if (isAssignedCoursesError) {
-            console.log(assignedCoursesError);
             const message = errorMessageParser(assignedCoursesError);
             toast.error(message || "Failed to fetch assigned courses");
         }
@@ -80,7 +79,6 @@ const AssignedCourses = () => {
 
     useEffect(() => {
         if (isAllDepartmentsError) {
-            console.log(allDepartmentsError);
             const message = errorMessageParser(allDepartmentsError);
             toast.error(message || "Failed to fetch departments");
         }
@@ -98,13 +96,11 @@ const AssignedCourses = () => {
         try {
             setIsFormLoading(true);
             const res = await axiosSecure.delete(`/subject_offering/${id}`);
-            console.log(res);
             // @ts-ignore
             document.getElementById('delete_subject_offering_modal').close();
             allAssignedCoursesRefetch();
             toast.success(res?.data?.message);
         } catch (error) {
-            console.log(error);
             // @ts-ignore
             document.getElementById('delete_subject_offering_modal').close();
             const message = errorMessageParser(error);
