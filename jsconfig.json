@@ -26,16 +26,35 @@
 //   "include": ["src/**/*", "./*.d.ts"]
 // }
 
-// This suppresses warnings in linux
+// {
+//   "compilerOptions": {
+//     "module": "ESNext",
+//     "target": "ESNext",
+//     "moduleResolution": "Bundler",
+//     "jsx": "react-jsx",
+//     "allowJs": true,
+//     "checkJs": false,
+//     "noEmit": true
+//   },
+//   "include": ["src/**/*"]
+// }
+
 {
   "compilerOptions": {
-    "module": "ESNext",
     "target": "ESNext",
+    "module": "ESNext",
     "moduleResolution": "Bundler",
     "jsx": "react-jsx",
+
     "allowJs": true,
     "checkJs": false,
-    "noEmit": true
+
+    "baseUrl": ".",
+
+    "paths": {
+      "@/*": ["src/*"]
+    }
   },
-  "include": ["src/**/*"]
+
+  "include": ["src"]
 }
