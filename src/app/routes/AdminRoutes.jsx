@@ -10,6 +10,7 @@ import Subjects from "../../pages/admin/Subjects.jsx";
 import AssignedCourses from "../../pages/admin/AssignedCourses.jsx";
 import Marks from "../../pages/admin/Marks.jsx";
 import Results from "../../pages/private/Results.jsx";
+import AllAuditLogs from "../../pages/admin/AllAuditLogs.jsx";
 
 
 const AdminRoutes = (
@@ -31,6 +32,7 @@ const AdminRoutes = (
         <Route path="subjects" element={<Subjects />} />
         <Route path="assignedCourses" element={<AssignedCourses />} />
         <Route path="departmentsAndSemesters" element={<DepartmentsAndSemesters />} />
+        <Route path="audit-logs" element={<AllAuditLogs />} />
     </Route>
 )
 

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import errorMessageParser from "../../utils/errorMessageParser/errorMessageParser";
 import toast from "react-hot-toast";
 import SectionHeader from "../../utils/SectionHeader/SectionHeader";
+import { Link } from "react-router-dom";
 
 
 const RecentAuditLogs = () => {
@@ -33,9 +34,10 @@ const RecentAuditLogs = () => {
             <div className="flex justify-between items-center">
                 <SectionHeader section_title="Recent Audit Logs" />
 
-                <button className="btn btn-info btn-sm">All Logs</button>
+                <Link to={`/admin/audit-logs`} className="btn btn-info btn-sm">All Logs</Link>
             </div>
 
+            <h2>{recentAuditLogs?.length === 0 && "No recent audit logs found"}</h2>
 
             {isPending ?
                 <span className="loading loading-spinner text-info"></span>
