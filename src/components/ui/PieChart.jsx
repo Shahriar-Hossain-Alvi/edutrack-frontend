@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie } from 'react-chartjs-2';
-import useAxiosSecure from '../../../hooks/useAxiosSecure';
+import useAxiosSecure from '../../hooks/useAxiosSecure';
 
 
 ChartJS.register(ArcElement, Tooltip, Legend);

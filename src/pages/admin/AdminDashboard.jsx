@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure.jsx';
 import AdminDashboardCards from '../../components/ui/AdminDashboardCards.jsx';
 import SectionHeader from '../../utils/SectionHeader/SectionHeader.jsx';
@@ -10,7 +10,8 @@ import { useForm } from 'react-hook-form';
 import useAuth from '../../hooks/useAuth.jsx';
 import { toast } from 'react-hot-toast';
 import errorMessageParser from '../../utils/errorMessageParser/errorMessageParser.js';
-import PieChart from '../../components/pageComponents/AdminDashboard/PieChart.jsx';
+import PieChart from '../../components/ui/PieChart.jsx';
+import RecentAuditLogs from '../../components/ui/RecentAuditLogs.jsx';
 
 
 const AdminDashboard = () => {
@@ -29,7 +30,7 @@ const AdminDashboard = () => {
         }
     })
 
-    const { data: pieChartData, isPending: isPieChartData, isError: isPieChartDataError, error: pieChartDataError } = useQuery({
+    const { data: pieChartData, isPending: isPieChartDataPending, isError: isPieChartDataError, error: pieChartDataError } = useQuery({
         queryKey: ['pieChartData'],
         queryFn: async () => {
             const res = await axiosSecure('/adminDashboard/pieChart');
@@ -37,7 +38,19 @@ const AdminDashboard = () => {
         }
     })
 
-    console.log(pieChartData);
+    useEffect(() => {
+        if (isError) {
+            const message = errorMessageParser(error);
+            toast.error(message || "Failed to fetch dashboard data");
+        }
+    }, [isError])
+
+    useEffect(() => {
+        if (isPieChartDataError) {
+            const message = errorMessageParser(pieChartDataError);
+            toast.error(message || "Failed to fetch pie chart data");
+        }
+    }, [isPieChartDataError])
 
 
     const updateAdminPassword = async (data) => {
@@ -181,29 +194,39 @@ const AdminDashboard = () => {
 
             {/* Show Pie Charts */}
             <div className='grid my-10 md:grid-cols-2 gap-2'>
-                <div className='mx-auto'>
-                    <h2 className='mb-4'>Number of Student per Department</h2>
-                    {
-                        pieChartData?.student_pie_chart_data.length === 0 ?
-                            <p>No data available</p> :
-                            <PieChart
-                                pieChartData={pieChartData?.student_pie_chart_data}
-                                title="Students"
-                            />
-                    }
-                </div>
-                <div className='mx-auto'>
-                    <h2 className='mb-4'>Number of Student per Department</h2>
-                    {
-                        pieChartData?.teacher_pie_chart_data.length === 0 ?
-                            <p>No data available</p> :
-                            <PieChart
-                                pieChartData={pieChartData?.teacher_pie_chart_data}
-                                title="Teachers"
-                            />
-                    }
-                </div>
+
+                {
+                    isPieChartDataPending ? <span className="loading loading-spinner text-info"></span> :
+
+                        <>
+                            <div className='mx-auto'>
+                                <h2 className='mb-4'>Number of Students per Department</h2>
+                                {
+                                    pieChartData?.student_pie_chart_data.length === 0 ?
+                                        <p>No data available</p> :
+                                        <PieChart
+                                            pieChartData={pieChartData?.student_pie_chart_data}
+                                            title="Students"
+                                        />
+                                }
+                            </div>
+                            <div className='mx-auto'>
+                                <h2 className='mb-4'>Number of Teachers per Department</h2>
+                                {
+                                    pieChartData?.teacher_pie_chart_data.length === 0 ?
+                                        <p>No data available</p> :
+                                        <PieChart
+                                            pieChartData={pieChartData?.teacher_pie_chart_data}
+                                            title="Teachers"
+                                        />
+                                }
+                            </div>
+                        </>
+                }
             </div>
+
+            {/* recent audit logs */}
+            <RecentAuditLogs />
 
 
             {/* Future features */}
