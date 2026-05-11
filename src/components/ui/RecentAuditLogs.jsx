@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import errorMessageParser from "../../utils/errorMessageParser/errorMessageParser";
 import toast from "react-hot-toast";
 import SectionHeader from "../../utils/SectionHeader/SectionHeader";
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom";
 
 const RecentAuditLogs = () => {
     const axiosSecure = useAxiosSecure();
+    const [expandedRowId, setExpandedRowId] = useState(null);
 
     const { data: recentAuditLogs, isPending, isError, error } = useQuery({
         queryKey: ['recentAuditLogs'],
@@ -18,8 +19,6 @@ const RecentAuditLogs = () => {
         }
     })
 
-    console.log(recentAuditLogs);
-
     useEffect(() => {
         if (isError) {
             const message = errorMessageParser(error);
@@ -27,10 +26,9 @@ const RecentAuditLogs = () => {
         }
     }, [isError])
 
+
     return (
         <div>
-
-
             <div className="flex justify-between items-center">
                 <SectionHeader section_title="Recent Audit Logs" />
 
@@ -44,7 +42,7 @@ const RecentAuditLogs = () => {
                 :
                 <>
                     <div className="overflow-x-auto">
-                        <table className="table table-xs sm: table-md">
+                        <table className="table table-xs sm:table-md">
                             {/* head */}
                             <thead>
                                 <tr>
@@ -65,12 +63,22 @@ const RecentAuditLogs = () => {
                                 {recentAuditLogs?.map((auditLog) => <tr key={auditLog.id}>
                                     <th>{auditLog?.id}</th>
                                     <td className="text-left">{auditLog?.path}</td>
-                                    <td className="text-left">{auditLog?.action}</td>
-                                    <td className="text-left">{auditLog?.details}</td>
+                                    <td className="text-left min-w-48">{auditLog?.action}</td>
+                                    <td className="text-left min-w-40">
+                                        {expandedRowId === auditLog?.id ? auditLog?.details : auditLog?.details.slice(0, 50)}...
+                                        {
+                                            expandedRowId === auditLog?.id ?
+                                                <span onClick={() => setExpandedRowId(null)} className="text-nowrap italic link link-warning">see less</span>
+                                                :
+                                                <span onClick={() => setExpandedRowId(auditLog?.id)} className="text-nowrap italic link link-info opacity-70">see more</span>
+                                        }
+                                    </td>
                                     <td>{auditLog?.created_by || "N/A"}</td>
                                     <td>{new Date(auditLog?.created_at).toLocaleString()}</td>
                                     <td>{auditLog?.ipAddress || "N/A"}</td>
-                                    <td>{auditLog?.level.toUpperCase()}</td>
+                                    <td className={`${auditLog?.level === "info" ? "text-info" : auditLog?.level === "warning" ? "text-warning" : auditLog?.level === "error" ? "text-error" : auditLog?.level === "critical" ? "text-error font-bold" : "text-info"}`}>{
+                                        auditLog?.level.toUpperCase()
+                                    }</td>
                                     <td>{auditLog?.method}</td>
                                     <td>{auditLog?.payload}</td>
                                     <td>{new Date(auditLog?.updated_at).toLocaleString()}</td>
