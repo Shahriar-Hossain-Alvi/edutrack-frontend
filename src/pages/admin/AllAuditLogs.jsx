@@ -37,8 +37,6 @@ const AllAuditLogs = () => {
 
     const totalPages = allAuditLogs?.pages || 0;
 
-    console.log(allAuditLogs);
-
     return (
         <div>
             <div className='flex items-center gap-1'>

@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
         };
     }, []);
 
-    console.log(user);
+    // console.log(user);
 
     // logout sets state, then conditionally calls backend
     const logout = useCallback(async (bypassBackendCall = false) => {
@@ -85,7 +85,7 @@ const AuthProvider = ({ children }) => {
             if (error.response?.status === 401) {
                 // This is a known state: User is just not logged in.
                 setUser(null);
-                console.log("Token expires/No active session found/login again.");
+                // console.log("Token expires/No active session found/login again.");
             } else {
                 console.error("Actual error while fetching user", error);
             }
@@ -103,7 +103,6 @@ const AuthProvider = ({ children }) => {
 
             ws.onmessage = (event) => {
                 const data = JSON.parse(event.data);
-                console.log(data);
                 if (data.type === "RESULT_PUBLISHED") {
                     toast.success(data.message);
                 } else if (data.type === "PAYMENT_STATUS_UPDATE") {

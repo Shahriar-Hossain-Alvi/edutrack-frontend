@@ -30,15 +30,15 @@ const useAxiosInterceptor = () => {
                 // originalRequest._retry confirms that this is the first retry not a subsequent retry(loop)
                 if (status === 401 && !originalRequest._retry) {
                     try {
-                        console.log("Access token expired. Attempting to refresh...");
+                        // console.log("Access token expired. Attempting to refresh...");
 
                         // call the /refresh route
                         await axios.post(`${import.meta.env.VITE_API_BASE_URL}/auth/refresh`, {}, { withCredentials: true });
-                        console.log("Token refreshed successfully");
+                        // console.log("Token refreshed successfully");
 
                         return axiosSecure(originalRequest); // send the original request again
                     } catch (refreshError) {
-                        console.log("Refresh token also expired or invalid. Logging out");
+                        // console.log("Refresh token also expired or invalid. Logging out");
 
                         // if refresh token also expired, logout
                         await logout(true);
