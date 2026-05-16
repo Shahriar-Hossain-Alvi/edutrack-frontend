@@ -138,7 +138,7 @@ const StudentProfile = () => {
                         </div>
                     </div>
                     <div tabIndex={-1} className="dropdown-content bg-base-100 rounded-box z-1 p-2 min-w-64 shadow-sm">
-                        {notification?.map((n, index) => (
+                        {notification?.map((n) => (
                             <div key={n?.id} role="alert" className={`alert alert-info ${theme === "dark" && "alert-soft"} mb-2`}>
                                 <span>{n?.message}</span>
 
@@ -387,7 +387,7 @@ const StudentProfile = () => {
                     <div className="rounded">
                         <img src={userImage || defaultImage} />
                     </div>
-                    <h3 className="font-bold text-lg text-center mt-3">{userProfileData?.student.name}</h3>
+                    <h3 className="font-bold text-lg text-center mt-3">{userProfileData?.student?.name}</h3>
                 </div>
                 <form method="dialog" className="modal-backdrop">
                     <button>close</button>
