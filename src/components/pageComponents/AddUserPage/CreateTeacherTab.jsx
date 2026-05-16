@@ -76,8 +76,8 @@ const CreateTeacherTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
             // optional fields for student table
             photo_url: uploadedPhotoUrl || "",
             photo_public_id: public_id || "",
-            present_address: data.present_address || "",
-            permanent_address: data.permanent_address || "",
+            present_address: data?.present_address || "",
+            permanent_address: data?.permanent_address || "",
             date_of_birth: data.date_of_birth ? data.date_of_birth : null,
 
             // required fields for user table
