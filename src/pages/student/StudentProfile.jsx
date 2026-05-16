@@ -364,8 +364,8 @@ const StudentProfile = () => {
                         {/* Present Address */}
                         <h4 className="text-gray-500">Present Address</h4>
                         <h4>
-                            {userProfileData?.student.present_address}
-                            {userProfileData?.student.present_address === "" && <span className="text-error">N/A</span>}
+                            {userProfileData?.student?.present_address}
+                            {userProfileData?.student?.present_address === "" && <span className="text-error">N/A</span>}
                         </h4>
                     </div>
 
@@ -374,8 +374,8 @@ const StudentProfile = () => {
                         <h4 className="text-gray-500">Permanent Address</h4>
 
                         <h4 className="font-medium">
-                            {userProfileData?.student.permanent_address}
-                            {userProfileData?.student.permanent_address === "" && <span className="text-error">N/A</span>}
+                            {userProfileData?.student?.permanent_address}
+                            {userProfileData?.student?.permanent_address === "" && <span className="text-error">N/A</span>}
                         </h4>
                     </div>
                 </div>

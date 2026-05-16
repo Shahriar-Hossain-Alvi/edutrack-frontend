@@ -100,8 +100,8 @@ const CreateStudentTab = ({ allDepartments, isDepartmentsPending, isDepartmentsE
             semester_id: parseInt(data.semesterId) || null,
             photo_url: uploadedPhotoUrl || "",
             photo_public_id: public_id || "",
-            present_address: data.present_address || "",
-            permanent_address: data.permanent_address || "",
+            present_address: data?.present_address || "",
+            permanent_address: data?.permanent_address || "",
             date_of_birth: data.date_of_birth ? data.date_of_birth : null,
 
             // required fields for user table
