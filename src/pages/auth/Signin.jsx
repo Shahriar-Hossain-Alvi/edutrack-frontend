@@ -18,6 +18,7 @@ const Signin = () => {
     const dummy_teacher_email = import.meta.env.VITE_DUMMY_TEACHER_EMAIL;
     const dummy_student_email = import.meta.env.VITE_DUMMY_STUDENT_EMAIL;
     const dummy_user_password = import.meta.env.VITE_DUMMY_USER_PASSWORD;
+    const dummy_admin_email = import.meta.env.VITE_DUMMY_ADMIN_EMAIL;
 
     const [theme] = useTheme();
     const [showPassword, setShowPassword] = useState(false);
@@ -87,7 +88,11 @@ const Signin = () => {
         } else if (role == "student") {
             formData.append('username', dummy_student_email);
             formData.append('password', dummy_user_password);
+        } else if (role == "admin") {
+            formData.append('username', dummy_admin_email);
+            formData.append('password', dummy_user_password);
         }
+
 
         try {
             setFormLoading(true);
@@ -184,19 +189,26 @@ const Signin = () => {
                             {/* <a className="link link-hover link-info text-right text-sm">Forgot password?</a> */}
                             <button className={`btn ${formLoading ? "btn-disabled" : "bg-primary hover:bg-primary-dark text-white"}`} type='submit'>Login</button>
                         </fieldset>
-
+                        <div className='text-center'>
+                            <h4>--------------- Direct Signin ---------------</h4>
+                        </div>
                         <div className='flex justify-center gap-2'>
                             <button
                                 disabled={formLoading}
                                 onClick={() => handleDummySignIn("teacher")}
                                 type='button'
-                                className="btn btn-accent">Signin Teacher</button>
+                                className="btn btn-accent">Teacher</button>
 
                             <button
                                 disabled={formLoading}
                                 onClick={() => handleDummySignIn("student")}
                                 type='button'
-                                className="btn btn-secondary">Signin Student</button>
+                                className="btn btn-secondary">Student</button>
+                            <button
+                                disabled={formLoading}
+                                onClick={() => handleDummySignIn("admin")}
+                                type='button'
+                                className="btn btn-info">Admin</button>
                         </div>
                     </form>
                 </div>
